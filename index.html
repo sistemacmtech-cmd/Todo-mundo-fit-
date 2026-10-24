@@ -3,149 +3,283 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>Todo Mundo Fit</title>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <style>
+
 body{
 font-family:Arial,sans-serif;
 background:#0f172a;
 color:white;
 padding:15px;
-margin:0
+margin:0;
+transition:.3s;
 }
+
+.claro{
+background:#f8fafc;
+color:#111827;
+}
+
 .card{
 background:#1e293b;
 padding:15px;
+border-radius:15px;
 margin-bottom:15px;
-border-radius:15px
 }
-input,button{
+
+.claro .card{
+background:white;
+color:#111827;
+}
+
+.logo{
+font-size:28px;
+text-align:center;
+font-weight:bold;
+margin-bottom:15px;
+}
+
+input,textarea,button{
 width:100%;
 padding:10px;
-margin:5px 0;
+margin-top:5px;
+margin-bottom:10px;
 border-radius:10px;
-border:none
+border:none;
 }
+
 button{
 background:#22c55e;
 color:white;
-font-weight:bold
-}
-canvas{
-background:white;
-border-radius:10px;
-margin-top:10px
-}
-.logo{
-font-size:28px;
 font-weight:bold;
-text-align:center;
-margin-bottom:20px
+cursor:pointer;
 }
+
+#modalVideo{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.9);
+padding:20px;
+z-index:1000;
+}
+
+iframe{
+width:100%;
+height:300px;
+border:none;
+}
+
 </style>
 </head>
-
 <body>
 
 <div class="logo">🏋️ TODO MUNDO FIT</div>
 
+<button id="temaBtn" onclick="alternarTema()">
+🌙 Modo Claro
+</button>
+
 <div class="card">
-<h3>Dados</h3>
 
-<input id="peso" type="number" placeholder="Peso kg">
+<h3>👤 Perfil</h3>
 
-<input id="altura" type="number" step="0.01" placeholder="Altura m">
+<input id="nome" placeholder="Nome">
+<input id="idade" type="number" placeholder="Idade">
+<input id="sexo" placeholder="Sexo">
+<input id="objetivo" placeholder="Objetivo">
 
-<input id="metaPeso" type="number" placeholder="Meta kg">
+<button onclick="salvarPerfil()">
+Salvar Perfil
+</button>
 
-<button onclick="calcular()">Calcular</button>
-
-<div id="resultado"></div>
 </div>
 
 <div class="card">
-<h3>💧 Água</h3>
 
-<input id="metaAgua" type="number" step="0.1" placeholder="Meta Litros">
+<h3>📊 Avaliação Física</h3>
 
-<input id="agua" type="number" step="0.1" placeholder="Consumido Hoje">
+<input id="peso" type="number" placeholder="Peso (kg)">
+<input id="altura" type="number" step="0.01" placeholder="Altura (m)">
+<input id="metaPeso" type="number" placeholder="Meta (kg)">
 
-<button onclick="salvarAgua()">Salvar Água</button>
+<button onclick="calcularIMC()">
+Calcular
+</button>
+
+<div id="resultado"></div>
+
+</div>
+
+<div class="card">
+
+<h3>💧 Hidratação</h3>
+
+<input id="metaAgua" type="number" step="0.1" placeholder="Meta de água (L)">
+<input id="agua" type="number" step="0.1" placeholder="Água consumida hoje (L)">
+
+<button onclick="calcularMetaIdeal()">
+Meta Ideal Automática
+</button>
+
+<button onclick="salvarAgua()">
+Salvar Consumo
+</button>
 
 <div id="aguaInfo"></div>
 
-<h2 id="streak">🔥 0 dias</h2>
+<h3 id="streak">
+🔥 0 dias
+</h3>
+
 </div>
 
 <div class="card">
-<h3>📈 Evolução Peso</h3>
-<canvas id="graficoPeso"></canvas>
-</div>
 
-<div class="card">
-<h3>💧 Evolução Água</h3>
-<canvas id="graficoAgua"></canvas>
-</div>
-
-<div class="card">
 <h3>💡 Dica do Dia</h3>
+
 <div id="dica"></div>
+
 </div>
 
 <div class="card">
-<h3>🔥 Exercícios do Dia</h3>
+
+<h3>🔥 Treino do Dia</h3>
+
 <div id="treino"></div>
+
+</div>
+
+<div class="card">
+
+<h3>🍽 Diário Alimentar</h3>
+
+<textarea id="diario" rows="5"></textarea>
+
+<button onclick="salvarDiario()">
+Salvar Diário
+</button>
+
+</div>
+
+<div class="card">
+
+<h3>⏰ Lembrete de Água</h3>
+
+<input id="horaLembrete" type="time">
+
+<button onclick="salvarLembrete()">
+Salvar Horário
+</button>
+
+</div>
+
+<div id="modalVideo">
+
+<button onclick="fecharVideo()">
+Fechar Vídeo
+</button>
+
+<br><br>
+
+<iframe id="player" allowfullscreen></iframe>
+
 </div>
 
 <script>
 
 const dicas=[
-"Beba mais água",
-"Evite refrigerante",
-"Caminhe 30 minutos",
-"Durma 8 horas",
-"Coma frutas",
-"Evite ultraprocessados"
+"Beba mais água hoje.",
+"Evite refrigerantes.",
+"Caminhe 30 minutos.",
+"Durma pelo menos 8 horas.",
+"Consuma frutas diariamente.",
+"Evite alimentos ultraprocessados."
 ];
 
 const exercicios=[
-"Agachamento",
-"Flexão",
-"Prancha",
-"Polichinelo",
-"Abdominal",
-"Afundo",
-"Burpee"
+
+{
+nome:"Agachamento",
+video:"https://www.youtube.com/embed/aclHkVaku9U"
+},
+
+{
+nome:"Flexão",
+video:"https://www.youtube.com/embed/IODxDxX7oi4"
+},
+
+{
+nome:"Prancha",
+video:"https://www.youtube.com/embed/pSHjTRCQxIw"
+},
+
+{
+nome:"Afundo",
+video:"https://www.youtube.com/embed/QOVaHwm-Q6U"
+}
+
 ];
 
-carregar();
+function salvarPerfil(){
 
-function calcular(){
+const perfil={
+nome:nome.value,
+idade:idade.value,
+sexo:sexo.value,
+objetivo:objetivo.value
+};
 
-let peso=parseFloat(pesoEl().value);
-let altura=parseFloat(alturaEl().value);
-let meta=parseFloat(metaPesoEl().value);
+localStorage.setItem(
+"perfil",
+JSON.stringify(perfil)
+);
+
+alert("Perfil salvo");
+
+}
+
+function calcularIMC(){
+
+let peso=parseFloat(
+document.getElementById("peso").value
+);
+
+let altura=parseFloat(
+document.getElementById("altura").value
+);
+
+let meta=document.getElementById("metaPeso").value;
 
 if(!peso || !altura) return;
 
-let imc=peso/(altura*altura);
+let imc=
+peso/(altura*altura);
 
 let status="";
 
-if(imc<18.5) status="Abaixo do Peso";
-else if(imc<25) status="Peso Ideal";
-else if(imc<30) status="Sobrepeso";
-else status="Obesidade";
+if(imc<18.5)
+status="Abaixo do peso";
+else if(imc<25)
+status="Peso ideal";
+else if(imc<30)
+status="Sobrepeso";
+else
+status="Obesidade";
 
-let massa=(peso*0.75).toFixed(1);
+let massa=
+(peso*0.75).toFixed(1);
 
-resultado.innerHTML=`
+resultado.innerHTML=
+`
 IMC: <b>${imc.toFixed(1)}</b><br>
 Status: <b>${status}</b><br>
-Massa Magra: <b>${massa}kg</b><br>
-Meta: <b>${meta}kg</b>
+Massa magra estimada:
+<b>${massa}kg</b><br>
+Meta:
+<b>${meta}kg</b>
 `;
 
 localStorage.setItem("peso",peso);
@@ -154,45 +288,83 @@ localStorage.setItem("metaPeso",meta);
 
 }
 
+function calcularMetaIdeal(){
+
+let peso=
+parseFloat(
+document.getElementById("peso").value
+);
+
+if(!peso) return;
+
+let meta=
+((peso*35)/1000)
+.toFixed(1);
+
+metaAgua.value=meta;
+
+}
+
 function salvarAgua(){
 
-let litros=parseFloat(document.getElementById("agua").value);
+let litros=
+parseFloat(
+agua.value
+);
 
-let meta=parseFloat(document.getElementById("metaAgua").value);
+let meta=
+parseFloat(
+metaAgua.value
+);
 
 if(isNaN(meta) || meta<1 || meta>10){
-alert("Meta entre 1 e 10 litros");
+
+alert("Meta entre 1L e 10L");
 return;
+
 }
 
 if(isNaN(litros) || litros<0 || litros>15){
-alert("Consumo entre 0 e 15 litros");
+
+alert("Consumo entre 0L e 15L");
 return;
+
 }
 
-localStorage.setItem("metaAgua",meta);
+localStorage.setItem(
+"metaAgua",
+meta
+);
 
 let hist=
-JSON.parse(localStorage.getItem("historicoAgua"))
+JSON.parse(
+localStorage.getItem("aguaHist")
+)
 || [];
 
 let hoje=
-new Date().toISOString().split("T")[0];
+new Date()
+.toISOString()
+.split("T")[0];
 
-let existente=
+let r=
 hist.find(x=>x.data===hoje);
 
-if(existente){
-existente.litros=litros;
+if(r){
+
+r.litros=litros;
+
 }else{
+
 hist.push({
 data:hoje,
 litros:litros
 });
+
 }
 
 localStorage.setItem(
-"historicoAgua",
+"aguaHist",
 JSON.stringify(hist)
 );
 
@@ -200,100 +372,14 @@ aguaInfo.innerHTML=
 `${litros}L de ${meta}L`;
 
 calcularStreak();
-graficoAgua();
-}
 
-function salvarPeso(){
-
-let peso=parseFloat(
-pesoEl().value
-);
-
-if(!peso) return;
-
-let hist=
-JSON.parse(
-localStorage.getItem("historicoPeso")
-)||[];
-
-hist.push({
-data:new Date().toLocaleDateString(),
-peso:peso
-});
-
-localStorage.setItem(
-"historicoPeso",
-JSON.stringify(hist)
-);
-
-graficoPeso();
-}
-
-setInterval(salvarPeso,86400000);
-
-function graficoPeso(){
-
-let hist=
-JSON.parse(
-localStorage.getItem("historicoPeso")
-)||[];
-
-new Chart(
-document.getElementById("graficoPeso"),
-{
-type:'line',
-data:{
-labels:hist.map(x=>x.data),
-datasets:[{
-label:'Peso',
-data:hist.map(x=>x.peso),
-borderColor:'green'
-}]
-}
-});
-}
-
-function graficoAgua(){
-
-let hist=
-JSON.parse(
-localStorage.getItem("historicoAgua")
-)||[];
-
-let meta=
-parseFloat(
-localStorage.getItem("metaAgua")
-)||3;
-
-new Chart(
-document.getElementById("graficoAgua"),
-{
-data:{
-labels:hist.map(x=>x.data),
-datasets:[
-{
-type:'bar',
-label:'Água',
-data:hist.map(x=>x.litros),
-backgroundColor:'#3b82f6'
-},
-{
-type:'line',
-label:'Meta',
-data:new Array(hist.length).fill(meta),
-borderColor:'green',
-borderDash:[5,5]
-}
-]
-}
-});
 }
 
 function calcularStreak(){
 
 let hist=
 JSON.parse(
-localStorage.getItem("historicoAgua")
+localStorage.getItem("aguaHist")
 )||[];
 
 let meta=
@@ -301,12 +387,14 @@ parseFloat(
 localStorage.getItem("metaAgua")
 )||3;
 
-let dias=hist.filter(
+let total=
+hist.filter(
 x=>x.litros>=meta
 ).length;
 
 streak.innerHTML=
-"🔥 "+dias+" dias";
+"🔥 "+total+" dias";
+
 }
 
 function gerarDica(){
@@ -326,31 +414,124 @@ let html="";
 
 for(let i=0;i<3;i++){
 
-html+="✅ "+
+let ex=
 exercicios[
 Math.floor(
 Math.random()*exercicios.length
 )
-]+"<br>";
+];
+
+html+=`
+<p>
+✅ ${ex.nome}
+</p>
+
+<button onclick="abrirVideo('${ex.video}')">
+▶ Assistir Aula
+</button>
+`;
 
 }
 
 treino.innerHTML=html;
+
+}
+
+function abrirVideo(url){
+
+player.src=url;
+
+modalVideo.style.display="block";
+
+}
+
+function fecharVideo(){
+
+player.src="";
+
+modalVideo.style.display="none";
+
+}
+
+function salvarDiario(){
+
+localStorage.setItem(
+"diario",
+diario.value
+);
+
+alert("Diário salvo");
+
+}
+
+function salvarLembrete(){
+
+localStorage.setItem(
+"horaLembrete",
+horaLembrete.value
+);
+
+alert("Lembrete salvo");
+
+}
+
+function alternarTema(){
+
+document.body
+.classList
+.toggle("claro");
+
+if(
+document.body
+.classList
+.contains("claro")
+){
+
+temaBtn.innerHTML=
+"☀️ Modo Escuro";
+
+localStorage.setItem(
+"tema",
+"claro"
+);
+
+}else{
+
+temaBtn.innerHTML=
+"🌙 Modo Claro";
+
+localStorage.setItem(
+"tema",
+"escuro"
+);
+
+}
+
 }
 
 function carregar(){
 
-pesoEl().value=
-localStorage.getItem("peso") || "";
+if(
+localStorage.getItem("tema")
+==="claro"
+){
 
-alturaEl().value=
-localStorage.getItem("altura") || "";
+document.body
+.classList
+.add("claro");
 
-metaPesoEl().value=
-localStorage.getItem("metaPeso") || "";
+temaBtn.innerHTML=
+"☀️ Modo Escuro";
 
-document.getElementById("metaAgua").value=
-localStorage.getItem("metaAgua") || 3;
+}
+
+diario.value=
+localStorage.getItem("diario")
+||"";
+
+metaAgua.value=
+localStorage.getItem("metaAgua")
+||"3";
 
 gerarDica();
 gerarTreino();
@@ -358,9 +539,46 @@ calcularStreak();
 
 }
 
-function pesoEl(){return document.getElementById("peso")}
-function alturaEl(){return document.getElementById("altura")}
-function metaPesoEl(){return document.getElementById("metaPeso")}
+Notification.requestPermission();
+
+setInterval(()=>{
+
+let hora=
+localStorage.getItem(
+"horaLembrete"
+);
+
+if(!hora) return;
+
+let agora=new Date();
+
+let atual=
+String(
+agora.getHours()
+).padStart(2,"0")
++":"
++
+String(
+agora.getMinutes()
+).padStart(2,"0");
+
+if(
+hora===atual &&
+Notification.permission==="granted"
+){
+
+new Notification(
+"💧 Todo Mundo Fit",
+{
+body:"Hora de beber água!"
+}
+);
+
+}
+
+},60000);
+
+carregar();
 
 </script>
 
