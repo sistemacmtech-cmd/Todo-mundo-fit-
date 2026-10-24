@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Todo Mundo Fit</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0f172a;
+color:white;
+padding:20px;
+}
+
+header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.logo{
+font-size:32px;
+font-weight:bold;
+background:linear-gradient(90deg,#22c55e,#3b82f6);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:20px;
+margin-bottom:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.3);
+}
+
+input{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+margin-top:10px;
+margin-bottom:10px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:linear-gradient(90deg,#22c55e,#3b82f6);
+border:none;
+border-radius:10px;
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.resultado{
+margin-top:15px;
+font-size:18px;
+}
+
+img{
+width:100%;
+border-radius:15px;
+margin-top:10px;
+}
+
+.exercise{
+margin-top:20px;
+}
+
+.dica{
+font-size:18px;
+line-height:1.5;
+}
+
+@media (min-width:768px){
+
+.container{
+max-width:800px;
+margin:auto;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+<div class="logo">
+🏋️ TODO MUNDO FIT
+</div>
+</header>
+
+<div class="card">
+
+<h2>Calculadora Fitness</h2>
+
+<input type="number" id="peso" placeholder="Peso atual (kg)">
+
+<input type="number" id="altura" placeholder="Altura (m)">
+
+<input type="number" id="meta" placeholder="Peso desejado (kg)">
+
+<button onclick="calcular()">
+Calcular
+</button>
+
+<div class="resultado" id="resultado"></div>
+
+</div>
+
+<div class="card">
+
+<h2>💡 Dica do Dia</h2>
+
+<p class="dica" id="dica"></p>
+
+</div>
+
+<div class="card">
+
+<h2>🔥 Treino do Dia</h2>
+
+<div id="treino"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const dicas = [
+
+"Beba pelo menos 2 litros de água hoje.",
+
+"Evite refrigerantes e sucos industrializados.",
+
+"Caminhe por pelo menos 30 minutos.",
+
+"Durma 8 horas por noite.",
+
+"Coma mais verduras e legumes.",
+
+"Troque frituras por alimentos assados.",
+
+"Evite comer assistindo TV."
+
+];
+
+const exercicios = [
+
+{
+nome:"Agachamento",
+imagem:"https://images.unsplash.com/photo-1517836357463-d25dfeac3438"
+},
+
+{
+nome:"Flexão",
+imagem:"https://images.unsplash.com/photo-1518611012118-696072aa579a"
+},
+
+{
+nome:"Prancha",
+imagem:"https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b"
+},
+
+{
+nome:"Abdominal",
+imagem:"https://images.unsplash.com/photo-1517964603305-11c0f6f66012"
+},
+
+{
+nome:"Polichinelo",
+imagem:"https://images.unsplash.com/photo-1517838277536-f5f99be501cd"
+},
+
+{
+nome:"Corrida Estacionária",
+imagem:"https://images.unsplash.com/photo-1483721310020-03333e577078"
+}
+
+];
+
+function calcular(){
+
+let peso=parseFloat(document.getElementById("peso").value);
+
+let altura=parseFloat(document.getElementById("altura").value);
+
+let meta=parseFloat(document.getElementById("meta").value);
+
+let imc=peso/(altura*altura);
+
+let status="";
+
+if(imc<18.5){
+status="Abaixo do peso";
+}
+else if(imc<25){
+status="Peso ideal";
+}
+else if(imc<30){
+status="Sobrepeso";
+}
+else{
+status="Obesidade";
+}
+
+let massaMagra=(peso*0.75).toFixed(1);
+
+document.getElementById("resultado").innerHTML=
+`
+<p><b>IMC:</b> ${imc.toFixed(1)}</p>
+
+<p><b>Classificação:</b> ${status}</p>
+
+<p><b>Massa Magra Estimada:</b> ${massaMagra} kg</p>
+
+<p><b>Meta:</b> ${meta} kg</p>
+
+`;
+
+}
+
+const dicaDia =
+dicas[Math.floor(Math.random()*dicas.length)];
+
+document.getElementById("dica").innerText=dicaDia;
+
+let html="";
+
+for(let i=0;i<3;i++){
+
+let ex =
+exercicios[Math.floor(Math.random()*exercicios.length)];
+
+html+=`
+
+<div class="exercise">
+
+<h3>${ex.nome}</h3>
+
+<img src="${ex.imagem}" alt="${ex.nome}">
+
+<p>Faça 3 séries.</p>
+
+</div>
+
+`;
+
+}
+
+document.getElementById("treino").innerHTML=html;
+
+if('serviceWorker' in navigator){
+navigator.serviceWorker.register('sw.js');
+}
+
+</script>
+
+</body>
+</html>
