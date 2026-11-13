@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🏋️ Todo Mundo Fit Pro - Gold Edition</title>
 <style>
 :root {
@@ -207,7 +207,7 @@ iframe {
 }
 </style>
 </head>
-<body>
+<body onload="carregarApp()">
 
 <div class="header-flex">
   <div class="logo">🏋️ TODO MUNDO FIT PRO</div>
@@ -228,33 +228,33 @@ iframe {
 <div class="card">
   <h3>👤 1. Perfil e Avaliação Inicial</h3>
   <div class="grid-2">
-    <input id="nome" placeholder="Nome completo">
-    <input id="email" type="email" placeholder="E-mail">
+    <input id="nome" placeholder="Nome completo" oninput="salvarPerfilAutomatico()">
+    <input id="email" type="email" placeholder="E-mail" oninput="salvarPerfilAutomatico()">
   </div>
   <div class="grid-2">
-    <input id="idade" type="number" placeholder="Idade (anos)">
-    <select id="sexo">
+    <input id="idade" type="number" placeholder="Idade (anos)" oninput="salvarPerfilAutomatico()">
+    <select id="sexo" onchange="salvarPerfilAutomatico()">
       <option value="masculino">Masculino</option>
       <option value="feminino">Feminino</option>
     </select>
   </div>
   <div class="grid-2">
-    <input id="peso" type="number" step="0.1" placeholder="Peso atual (kg)">
-    <input id="altura" type="number" step="0.01" placeholder="Altura (ex: 1.75)">
+    <input id="peso" type="number" step="0.1" placeholder="Peso atual (kg)" oninput="salvarPerfilAutomatico()">
+    <input id="altura" type="number" step="0.01" placeholder="Altura (ex: 1.75)" oninput="salvarPerfilAutomatico()">
   </div>
   <div class="grid-2">
-    <select id="experiencia">
+    <select id="experiencia" onchange="salvarPerfilAutomatico()">
       <option value="iniciante">Iniciante</option>
       <option value="intermediario">Intermediário</option>
       <option value="avancado">Avançado</option>
     </select>
-    <select id="objetivo">
+    <select id="objetivo" onchange="salvarPerfilAutomatico()">
       <option value="hipertrofia">Hipertrofia</option>
       <option value="emagrecimento">Emagrecimento</option>
       <option value="resistencia">Resistência / Condicionamento</option>
     </select>
   </div>
-  <button onclick="salvarPerfilCompleto()">Salvar Perfil e Avaliação</button>
+  <button onclick="salvarPerfilCompleto()">Calcular Avaliação Física</button>
   <div id="resultadoAvaliacao" style="margin-top: 15px; line-height: 1.6;"></div>
 </div>
 
@@ -269,7 +269,7 @@ iframe {
     <input id="perna" type="number" step="0.1" placeholder="Perna (cm)">
     <button onclick="salvarMedidas()" style="margin-top:6px;">Salvar Medidas</button>
   </div>
-  <div id="historicoMedidas" style="margin-top:10px; font-size: 14px;"></div>
+  <div id="historicoMedidas" style="margin-top:10px; font-size: 14px;">Nenhum registro recente.</div>
 </div>
 
 <!-- 2. GESTÃO DE TREINOS -->
@@ -305,18 +305,16 @@ iframe {
   <div class="grid-2">
     <div>
       <label>Data do Lembrete:</label>
-      <input id="dataLembrete" type="date">
+      <input id="dataLembrete" type="date" onchange="salvarLembreteDataHora()">
     </div>
     <div>
       <label>Horário para Despertar:</label>
-      <input id="horaLembrete" type="time">
+      <input id="horaLembrete" type="time" onchange="salvarLembreteDataHora()">
     </div>
   </div>
-  <button onclick="salvarLembreteDataHora()">Salvar Agendamento de Alarme</button>
   <div id="alertaInfo" style="margin-top:8px; font-size: 13px; color:var(--accent);"></div>
 
-  <textarea id="diario" rows="3" placeholder="Diário alimentar (o que comeu hoje)..." style="margin-top:12px;"></textarea>
-  <button onclick="salvarNutricao()">Salvar Diário Alimentar</button>
+  <textarea id="diario" rows="3" placeholder="Diário alimentar (o que comeu hoje)..." oninput="salvarNutricao()" style="margin-top:12px;"></textarea>
 </div>
 
 <!-- 4. GUIA E CONTROLE DO MOUNJARO -->
@@ -339,7 +337,7 @@ iframe {
     </div>
   </div>
   <button onclick="salvarMounjaro()">Registrar Aplicação</button>
-  <div id="historicoMounjaro" style="margin-top:12px; font-size: 14px;"></div>
+  <div id="historicoMounjaro" style="margin-top:12px; font-size: 14px;">Nenhum registro recente.</div>
 </div>
 
 <!-- RODAPÉ -->
@@ -374,10 +372,10 @@ iframe {
 
 <script>
 const exerciciosBase = [
-  { nome: "Ritbox - Aula  (PT-BR)", Treino em casa: "Espaço livre", video: "https://youtu.be/MVwuoXb5Xgc?si=BRsQddtIe9I0Hh9v", substituto: "Cardio para diminuir a barriga" },
-  { nome: "Ritbox - Coreografia Aeróbica Intensa (PT-BR)", 15 minutos intenso: "Espaço livre", video: "https://youtu.be/scTUovcfajA?si=_-aIEzGy_BjJbHAl", substituto: "Treino intenso" },
-  { nome: "Treino  (PT-BR)", aparelho: "Peso corporal", video: "https://youtu.be/V6bSyWigFJw?si=JVRFUx7u7iFKInnQ", substituto: "Dance aerobic" },
-  { nome: "Zumba fit - Queima Rápida (PT-BR)", aparelho: "Peso corporal", video: "https://youtu.be/s-aQ3EAMm8M?si=nTVf79TinFA62OAo", substituto: "Zumba" }
+  { nome: "Ritbox - Aula (PT-BR)", aparelho: "Espaço livre", video: "https://www.youtube.com/embed/MVwuoXb5Xgc", substituto: "Cardio para diminuir a barriga" },
+  { nome: "Ritbox - Coreografia Aeróbica Intensa (PT-BR)", aparelho: "Espaço livre", video: "https://www.youtube.com/embed/scTUovcfajA", substituto: "Treino intenso" },
+  { nome: "Treino Aeróbico (PT-BR)", aparelho: "Peso corporal", video: "https://www.youtube.com/embed/V6bSyWigFJw", substituto: "Dance aerobic" },
+  { nome: "Zumba fit - Queima Rápida (PT-BR)", aparelho: "Peso corporal", video: "https://www.youtube.com/embed/s-aQ3EAMm8M", substituto: "Zumba" }
 ];
 
 let cronometroInterval;
@@ -400,7 +398,7 @@ function pausarCronometro() {
 }
 
 function retomarCronometro() {
-  if (!cronometroRodando && segundosTotais > 0) {
+  if (!cronometroRodando) {
     cronometroRodando = true;
     cronometroInterval = setInterval(() => {
       segundosTotais++;
@@ -423,48 +421,55 @@ function atualizarDisplayCronometro() {
   document.getElementById("timerDisplay").innerText = `${h}:${m}:${s}`;
 }
 
-// FUNÇÃO PARA CRIAR ATALHO DIRETO NA TELA DO CELULAR
 function criarAtalhoCelular() {
   let isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   if (isIOS) {
-    alert("📱 Para adicionar à tela inicial no iPhone:\n\n1. Toque no botão de Compartilhar (quadrado com seta para cima) na barra inferior do Safari.\n2. Role para baixo e selecione 'Adicionar à Tela de Início'.");
+    alert("📱 Para adicionar à tela inicial no iPhone:\n\n1. Toque no botão de Compartilhar no Safari.\n2. Role para baixo e selecione 'Adicionar à Tela de Início'.");
   } else {
-    alert("📱 Para adicionar à tela inicial no Android:\n\n1. Toque no menu do navegador (três pontos no canto superior direito).\n2. Selecione 'Adicionar à tela inicial' ou 'Instalar aplicativo'.");
+    alert("📱 Para adicionar à tela inicial no Android:\n\n1. Toque no menu do navegador (três pontos).\n2. Selecione 'Adicionar à tela inicial' ou 'Instalar aplicativo'.");
   }
 }
 
-function salvarPerfilCompleto() {
+function salvarPerfilAutomatico() {
   const perfil = {
     nome: document.getElementById("nome").value,
     email: document.getElementById("email").value,
-    idade: parseInt(document.getElementById("idade").value) || 25,
+    idade: document.getElementById("idade").value,
     sexo: document.getElementById("sexo").value,
-    peso: parseFloat(document.getElementById("peso").value),
-    altura: parseFloat(document.getElementById("altura").value),
+    peso: document.getElementById("peso").value,
+    altura: document.getElementById("altura").value,
     experiencia: document.getElementById("experiencia").value,
     objetivo: document.getElementById("objetivo").value
   };
+  localStorage.setItem("perfil", JSON.stringify(perfil));
+}
+
+function salvarPerfilCompleto() {
+  salvarPerfilAutomatico();
+  let perfil = JSON.parse(localStorage.getItem("perfil"));
 
   if(!perfil.peso || !perfil.altura) {
     alert("Por favor, preencha peso e altura para os cálculos.");
     return;
   }
 
-  localStorage.setItem("perfil", JSON.stringify(perfil));
+  let p = parseFloat(perfil.peso);
+  let a = parseFloat(perfil.altura);
+  let id = parseInt(perfil.idade) || 25;
 
-  let imc = perfil.peso / (perfil.altura * perfil.altura);
+  let imc = p / (a * a);
   let bmr = (perfil.sexo === "masculino") 
-    ? (10 * perfil.peso) + (6.25 * (perfil.altura * 100)) - (5 * perfil.idade) + 5
-    : (10 * perfil.peso) + (6.25 * (perfil.altura * 100)) - (5 * perfil.idade) - 161;
+    ? (10 * p) + (6.25 * (a * 100)) - (5 * id) + 5
+    : (10 * p) + (6.25 * (a * 100)) - (5 * id) - 161;
   let tdee = Math.round(bmr * 1.55);
-  let gorduraEst = (perfil.sexo === "masculino") ? (1.20 * imc) + (0.23 * perfil.idade) - 16.2 : (1.20 * imc) + (0.23 * perfil.idade) - 5.4;
+  let gorduraEst = (perfil.sexo === "masculino") ? (1.20 * imc) + (0.23 * id) - 16.2 : (1.20 * imc) + (0.23 * id) - 5.4;
 
   document.getElementById("resultadoAvaliacao").innerHTML = `
     IMC: <b>${imc.toFixed(1)}</b><br>
-    Gasto Calórico Basal Estimado: <b>~${Math.round(bmr)} kcal</b> (TDEE total: ~${tdee} kcal)<br>
+    Gasto Calórico Basal Estimado: <b>~${Math.round(bmr)} kcal</b> (TDEE: ~${tdee} kcal)<br>
     % Gordura Corporal Estimado: <b>~${gorduraEst.toFixed(1)}%</b>
   `;
-  alert("Perfil e avaliações calculadas com sucesso!");
+  alert("Perfil salvo e avaliações calculadas com sucesso!");
 }
 
 function salvarMedidas() {
@@ -478,7 +483,7 @@ function salvarMedidas() {
   hist.unshift(medidas);
   localStorage.setItem("medidasHist", JSON.stringify(hist));
   exibirMedidas();
-  alert("Medidas registradas!");
+  alert("Medidas registradas com sucesso!");
 }
 
 function exibirMedidas() {
@@ -498,7 +503,7 @@ function renderizarTreinos() {
       <div class="exercise-item">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
           <b>${ex.nome}</b>
-          <button onclick="abrirVideo('${ex.video}')" style="width:auto; padding:6px 12px; margin:0; font-size:12px;">▶ Assistir Aula (5min+)</button>
+          <button onclick="abrirVideo('${ex.video}')" style="width:auto; padding:6px 12px; margin:0; font-size:12px;">▶ Assistir Aula</button>
         </div>
         <div style="font-size:12px; opacity:0.8; margin-bottom:8px;">Tipo: ${ex.aparelho}</div>
         <div class="grid-2" style="margin-bottom:0;">
@@ -514,9 +519,11 @@ function renderizarTreinos() {
 function salvarCargas() {
   let cargasSalvas = {};
   exerciciosBase.forEach((ex, index) => {
+    let c = document.getElementById(`carga_${index}`);
+    let r = document.getElementById(`reps_${index}`);
     cargasSalvas[index] = {
-      carga: document.getElementById(`carga_${index}`).value,
-      reps: document.getElementById(`reps_${index}`).value
+      carga: c ? c.value : "",
+      reps: r ? r.value : ""
     };
   });
   localStorage.setItem("cargasTreino", JSON.stringify(cargasSalvas));
@@ -548,20 +555,16 @@ function fecharTermos() {
 function salvarLembreteDataHora() {
   let data = document.getElementById("dataLembrete").value;
   let hora = document.getElementById("horaLembrete").value;
-  if(!data || !hora) {
-    alert("Por favor, selecione a data e o horário.");
-    return;
-  }
   localStorage.setItem("dataLembrete", data);
   localStorage.setItem("horaLembrete", hora);
-  document.getElementById("alertaInfo").innerHTML = `✅ Alarme agendado para ${data} às ${hora}.`;
-  alert("Lembrete salvo com sucesso!");
+  if(data && hora) {
+    document.getElementById("alertaInfo").innerHTML = `✅ Alarme agendado para ${data} às ${hora}.`;
+  }
 }
 
 function salvarNutricao() {
   let diario = document.getElementById("diario").value;
   localStorage.setItem("diario", diario);
-  alert("Diário alimentar salvo!");
 }
 
 function salvarMounjaro() {
@@ -610,8 +613,10 @@ function carregarApp() {
     document.getElementById("experiencia").value = perfil.experiencia || "iniciante";
     document.getElementById("objetivo").value = perfil.objetivo || "hipertrofia";
     
-    let imc = perfil.peso / (perfil.altura * perfil.altura);
-    document.getElementById("resultadoAvaliacao").innerHTML = `IMC Registrado: <b>${imc.toFixed(1)}</b>`;
+    if(perfil.peso && perfil.altura) {
+      let imc = parseFloat(perfil.peso) / (parseFloat(perfil.altura) * parseFloat(perfil.altura));
+      document.getElementById("resultadoAvaliacao").innerHTML = `IMC Registrado: <b>${imc.toFixed(1)}</b>`;
+    }
   }
 
   document.getElementById("dataLembrete").value = localStorage.getItem("dataLembrete") || "";
@@ -626,9 +631,7 @@ function carregarApp() {
   exibirMedidas();
   exibirMounjaro();
 }
-
-window.onload = carregarApp;
 </script>
-
 </body>
 </html>
+
