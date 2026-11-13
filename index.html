@@ -27,93 +27,71 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background: var(--bg-dark);
   color: var(--text-dark);
-  margin: 0;
-  padding: 0;
-  transition: background 0.3s, color 0.3s;
-}
-
-/* LAYOUT COM SIDEBAR (ABAS À ESQUERDA) */
-.app-layout {
-  display: flex;
-  min-height: 100vh;
-}
-
-.sidebar {
-  width: 250px;
-  background: var(--card-dark);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  padding: 20px 15px;
-  gap: 10px;
-  box-shadow: 4px 0 15px rgba(0,0,0,0.1);
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-.sidebar .logo {
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  color: var(--accent);
-  text-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
-  margin-bottom: 15px;
-  text-align: center;
-}
-
-.tab-btn {
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-dark);
-  text-align: left;
-  padding: 12px 15px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: none;
-  margin: 0;
-  width: 100%;
-}
-
-.tab-btn:hover {
-  background: rgba(212, 175, 55, 0.08);
-  color: var(--accent);
-  transform: none;
-  box-shadow: none;
-}
-
-.tab-btn.active {
-  background: var(--accent);
-  color: #000;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-}
-
-.main-content {
-  flex: 1;
-  padding: 20px;
-  max-width: 700px;
+  padding: 15px;
+  max-width: 650px;
   margin: 0 auto;
-  box-sizing: border-box;
-}
-
-.tab-pane {
-  display: none;
-}
-
-.tab-pane.active-pane {
-  display: block;
+  transition: background 0.3s, color 0.3s;
 }
 
 .header-flex {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 15px;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--accent);
+  text-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+}
+
+/* ESTILOS DO MENU DE ABAS */
+.nav-menu {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
   margin-bottom: 20px;
+  padding-bottom: 5px;
+  scrollbar-width: thin;
+}
+
+.nav-btn {
+  background: var(--card-dark);
+  color: var(--text-dark);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: none;
+  transition: all 0.2s;
+  width: auto;
+  margin: 0;
+}
+
+.nav-btn:hover {
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--accent);
+}
+
+.nav-btn.active {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active-tab {
+  display: block;
 }
 
 .card {
@@ -315,211 +293,180 @@ iframe {
   display: none;
   margin-bottom: 8px;
 }
-
-/* Responsividade para telas menores (celulares) */
-@media (max-width: 768px) {
-  .app-layout {
-    flex-direction: column;
-  }
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-    flex-direction: row;
-    overflow-x: auto;
-    padding: 12px;
-  }
-  .sidebar .logo {
-    display: none;
-  }
-  .tab-btn {
-    white-space: nowrap;
-    width: auto;
-    flex-shrink: 0;
-  }
-}
 </style>
 </head>
 <body onload="carregarApp()">
 
-<div class="app-layout">
-  <!-- MENU LATERAL ESQUERDO (ABAS) -->
-  <nav class="sidebar">
-    <div class="logo">🏋️ TODO MUNDO FIT</div>
-    <button class="tab-btn active" onclick="trocarAba(event, 'aba-perfil')">👤 Perfil & Evolução</button>
-    <button class="tab-btn" onclick="trocarAba(event, 'aba-treinos')">💃 Treinos & Cronômetro</button>
-    <button class="tab-btn" onclick="trocarAba(event, 'aba-nutricao')">🥗 Nutrição & Lembretes</button>
-    <button class="tab-btn" onclick="trocarAba(event, 'aba-mounjaro')">💉 Guia Mounjaro</button>
-  </nav>
+<div class="header-flex">
+  <div class="logo">🏋️ TODO MUNDO FIT PRO</div>
+  <button id="temaBtn" onclick="alternarTema()" style="width:auto; padding:8px 14px; font-size:13px;">
+    🌙 Modo Claro
+  </button>
+</div>
 
-  <!-- CONTEÚDO PRINCIPAL -->
-  <div class="main-content">
+<!-- BANNER DE PROPAGANDA E BOTÃO CRIAR ATALHO -->
+<div class="promo-banner">
+  🌟 App Desenvolvido Exclusivo: <b>@Carlamitertech</b> | Contato: <u>sistemacmtech@gmail.com</u><br>
+  <button onclick="criarAtalhoCelular()" style="margin-top: 10px; width: 100%; padding: 12px; font-size: 14px; background: var(--text-dark); color: var(--accent);">
+    📱 Criar Atalho na Tela do Celular
+  </button>
+</div>
+
+<!-- MENU DE ABAS -->
+<div class="nav-menu">
+  <button class="nav-btn active" onclick="mudarAba('aba-perfil')">👤 Perfil & Medidas</button>
+  <button class="nav-btn" onclick="mudarAba('aba-treinos')">💃 Treinos & Cronômetro</button>
+  <button class="nav-btn" onclick="mudarAba('aba-nutricao')">🥗 Nutrição & Alarme</button>
+  <button class="nav-btn" onclick="mudarAba('aba-mounjaro')">💉 Guia Mounjaro</button>
+</div>
+
+<!-- CONTEÚDO: 1. PERFIL E FOTO ANTES E DEPOIS + MEDIDAS -->
+<div id="aba-perfil" class="tab-content active-tab">
+  <div class="card">
+    <h3>👤 1. Perfil e Evolução (Antes & Depois)</h3>
+    <div class="grid-2">
+      <input id="nome" placeholder="Nome completo" oninput="salvarPerfilAutomatico()">
+      <input id="email" type="email" placeholder="E-mail" oninput="salvarPerfilAutomatico()">
+    </div>
+    <div class="grid-2">
+      <input id="idade" type="number" placeholder="Idade (anos)" oninput="salvarPerfilAutomatico()">
+      <select id="sexo" onchange="salvarPerfilAutomatico()">
+        <option value="masculino">Masculino</option>
+        <option value="feminino">Feminino</option>
+      </select>
+    </div>
+    <div class="grid-2">
+      <input id="peso" type="number" step="0.1" placeholder="Peso atual (kg)" oninput="salvarPerfilAutomatico()">
+      <input id="altura" type="number" step="0.01" placeholder="Altura (ex: 1.75)" oninput="salvarPerfilAutomatico()">
+    </div>
+    <div class="grid-2">
+      <select id="experiencia" onchange="salvarPerfilAutomatico()">
+        <option value="iniciante">Iniciante</option>
+        <option value="intermediario">Intermediário</option>
+        <option value="avancado">Avançado</option>
+      </select>
+      <select id="objetivo" onchange="salvarPerfilAutomatico()">
+        <option value="hipertrofia">Hipertrofia</option>
+        <option value="emagrecimento">Emagrecimento</option>
+        <option value="resistencia">Resistência / Condicionamento</option>
+      </select>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
     
-    <div class="header-flex">
-      <div style="font-size: 16px; font-weight: bold; color: var(--accent);" class="logo-mobile">🏋️ TODO MUNDO FIT PRO</div>
-      <button id="temaBtn" onclick="alternarTema()" style="width:auto; padding:8px 14px; font-size:13px;">
-        🌙 Modo Claro
-      </button>
-    </div>
-
-    <!-- BANNER DE PROPAGANDA E BOTÃO CRIAR ATALHO -->
-    <div class="promo-banner">
-      🌟 App Desenvolvido Exclusivo: <b>@Carlamitertech</b> | Contato: <u>sistemacmtech@gmail.com</u><br>
-      <button onclick="criarAtalhoCelular()" style="margin-top: 10px; width: 100%; padding: 12px; font-size: 14px; background: var(--text-dark); color: var(--accent);">
-        📱 Criar Atalho na Tela do Celular
-      </button>
-    </div>
-
-    <!-- ABA 1: PERFIL E MEDIDAS -->
-    <div id="aba-perfil" class="tab-pane active-pane">
-      <div class="card">
-        <h3>👤 1. Perfil e Evolução (Antes & Depois)</h3>
-        <div class="grid-2">
-          <input id="nome" placeholder="Nome completo" oninput="salvarPerfilAutomatico()">
-          <input id="email" type="email" placeholder="E-mail" oninput="salvarPerfilAutomatico()">
-        </div>
-        <div class="grid-2">
-          <input id="idade" type="number" placeholder="Idade (anos)" oninput="salvarPerfilAutomatico()">
-          <select id="sexo" onchange="salvarPerfilAutomatico()">
-            <option value="masculino">Masculino</option>
-            <option value="feminino">Feminino</option>
-          </select>
-        </div>
-        <div class="grid-2">
-          <input id="peso" type="number" step="0.1" placeholder="Peso atual (kg)" oninput="salvarPerfilAutomatico()">
-          <input id="altura" type="number" step="0.01" placeholder="Altura (ex: 1.75)" oninput="salvarPerfilAutomatico()">
-        </div>
-        <div class="grid-2">
-          <select id="experiencia" onchange="salvarPerfilAutomatico()">
-            <option value="iniciante">Iniciante</option>
-            <option value="intermediario">Intermediário</option>
-            <option value="avancado">Avançado</option>
-          </select>
-          <select id="objetivo" onchange="salvarPerfilAutomatico()">
-            <option value="hipertrofia">Hipertrofia</option>
-            <option value="emagrecimento">Emagrecimento</option>
-            <option value="resistencia">Resistência / Condicionamento</option>
-          </select>
-        </div>
-
-        <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
-        
-        <label style="font-weight: bold; margin-bottom: 6px;">📸 Registro Fotográfico (Antes & Depois):</label>
-        <div class="photo-preview-container">
-          <div class="photo-box">
-            <span id="labelAntes" style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Foto "Antes"</span>
-            <img id="imgAntesPreview" alt="Antes">
-            <input type="file" accept="image/*" id="inputFotoAntes" onchange="processarE_SalvarFoto('antes', event)" style="margin:0; font-size:11px; padding:6px;">
-          </div>
-          <div class="photo-box">
-            <span id="labelDepois" style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Foto "Depois"</span>
-            <img id="imgDepoisPreview" alt="Depois">
-            <input type="file" accept="image/*" id="inputFotoDepois" onchange="processarE_SalvarFoto('depois', event)" style="margin:0; font-size:11px; padding:6px;">
-          </div>
-        </div>
-        <button onclick="limparFotos()" style="background:#ef4444; color:white; margin-top:10px; font-size: 12px; padding: 8px;">🗑️ Excluir Fotos Salvas</button>
+    <label style="font-weight: bold; margin-bottom: 6px;">📸 Registro Fotográfico (Antes & Depois):</label>
+    <div class="photo-preview-container">
+      <div class="photo-box">
+        <span id="labelAntes" style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Foto "Antes"</span>
+        <img id="imgAntesPreview" alt="Antes">
+        <input type="file" accept="image/*" id="inputFotoAntes" onchange="processarE_SalvarFoto('antes', event)" style="margin:0; font-size:11px; padding:6px;">
       </div>
-
-      <!-- HISTÓRICO DE MEDIDAS -->
-      <div class="card">
-        <h3>📏 Histórico de Medidas Corporais</h3>
-        <div class="grid-2">
-          <input id="cintura" type="number" step="0.1" placeholder="Cintura (cm)">
-          <input id="braco" type="number" step="0.1" placeholder="Braço (cm)">
-        </div>
-        <div class="grid-2">
-          <input id="perna" type="number" step="0.1" placeholder="Perna (cm)">
-          <button onclick="salvarMedidas()" style="margin-top:6px;">Salvar Medidas</button>
-        </div>
-        <div id="historicoMedidas" style="margin-top:10px; font-size: 14px;">Nenhum registro recente.</div>
+      <div class="photo-box">
+        <span id="labelDepois" style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Foto "Depois"</span>
+        <img id="imgDepoisPreview" alt="Depois">
+        <input type="file" accept="image/*" id="inputFotoDepois" onchange="processarE_SalvarFoto('depois', event)" style="margin:0; font-size:11px; padding:6px;">
       </div>
     </div>
-
-    <!-- ABA 2: TREINOS E CRONÔMETRO -->
-    <div id="aba-treinos" class="tab-pane">
-      <div class="card">
-        <h3>💃 2. Gestão de Treinos (Ritbox e Aulas Aeróbicas)</h3>
-        <p style="font-size: 13px; opacity: 0.8; margin-top:0;">Aulas completas em português com mais de 5 minutos de duração:</p>
-        
-        <div id="listaTreinos"></div>
-        <button onclick="sugerirSubstituto()" style="background:#2563eb; color:white; margin-top:5px;">🔄 Aparelho/Espaço Ocupado? Ver Substituto</button>
-        <div id="sugestaoSubst" style="margin-top:10px; font-size:14px; font-style:italic; color:var(--accent);"></div>
-      </div>
-
-      <!-- CRONÔMETRO PROGRESSIVO -->
-      <div class="card">
-        <h3>⏱️ Cronômetro Progressivo (0 ao Infinito)</h3>
-        <p style="font-size: 13px; opacity: 0.85; line-height: 1.5; margin-top: 0;">
-          Clique em <b>Iniciar</b> para começar a contagem do zero. Você pode pausar, continuar ou zerar a qualquer momento.
-        </p>
-        <div class="timer-box">
-          <div id="timerDisplay" class="timer-display">00:00:00</div>
-          <div class="grid-3">
-            <button onclick="iniciarCronometro()">Iniciar</button>
-            <button onclick="pausarCronometro()" style="background:#f59e0b; color:white;">Pausar</button>
-            <button onclick="retomarCronometro()" style="background:#10b981; color:white;">Continuar</button>
-          </div>
-          <button onclick="zerarCronometro()" style="background:#ef4444; color:white; margin-top:8px;">Zerar Cronômetro</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ABA 3: NUTRIÇÃO E LEMBRETES -->
-    <div id="aba-nutricao" class="tab-pane">
-      <div class="card">
-        <h3>🥗 3. Nutrição, Hidratação e Lembretes</h3>
-        <div class="grid-2">
-          <div>
-            <label>Data do Lembrete:</label>
-            <input id="dataLembrete" type="date" onchange="salvarLembreteDataHora()">
-          </div>
-          <div>
-            <label>Horário para Despertar:</label>
-            <input id="horaLembrete" type="time" onchange="salvarLembreteDataHora()">
-          </div>
-        </div>
-        <div id="alertaInfo" style="margin-top:8px; font-size: 13px; color:var(--accent);"></div>
-
-        <textarea id="diario" rows="3" placeholder="Diário alimentar (o que comeu hoje)..." oninput="salvarNutricao()" style="margin-top:12px;"></textarea>
-      </div>
-    </div>
-
-    <!-- ABA 4: GUIA MOUNJARO -->
-    <div id="aba-mounjaro" class="tab-pane">
-      <div class="card">
-        <h3>💉 4. Guia & Controle de Aplicações Mounjaro</h3>
-        <p style="font-size: 13px; opacity: 0.9; margin-bottom: 12px;">
-          <b>💡 Dicas Nutricionais para quem usa Mounjaro:</b><br>
-          • Foque em proteínas magras (frango, ovos, peixe) em pequenas porções.<br>
-          • Hidrate-se constantemente ao longo do dia.<br>
-          • Evite alimentos gordurosos para prevenir desconfortos.
-        </p>
-        <div class="grid-2">
-          <div>
-            <label>Data da Aplicação:</label>
-            <input id="dataMounjaro" type="date">
-          </div>
-          <div>
-            <label>Dose Aplicada (mg):</label>
-            <input id="doseMounjaro" type="text" placeholder="Ex: 2.5mg ou 5mg">
-          </div>
-        </div>
-        <button onclick="salvarMounjaro()">Registrar Aplicação</button>
-        
-        <div style="margin-top: 15px;">
-          <label style="font-weight: bold; margin-bottom: 6px;">Histórico de Aplicações Semanais:</label>
-          <div id="historicoMounjaro">Nenhum registro recente.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RODAPÉ -->
-    <div class="footer-link">
-      <span onclick="abrirTermos()">Termos de Uso e Política de Privacidade</span>
-      <div style="margin-top: 5px; font-size: 11px; opacity: 0.6;">© 2026 Carlamitertech — Todos os direitos reservados.</div>
-    </div>
-
+    <button onclick="limparFotos()" style="background:#ef4444; color:white; margin-top:10px; font-size: 12px; padding: 8px;">🗑️ Excluir Fotos Salvas</button>
   </div>
+
+  <!-- HISTÓRICO DE MEDIDAS -->
+  <div class="card">
+    <h3>📏 Histórico de Medidas Corporais</h3>
+    <div class="grid-2">
+      <input id="cintura" type="number" step="0.1" placeholder="Cintura (cm)">
+      <input id="braco" type="number" step="0.1" placeholder="Braço (cm)">
+    </div>
+    <div class="grid-2">
+      <input id="perna" type="number" step="0.1" placeholder="Perna (cm)">
+      <button onclick="salvarMedidas()" style="margin-top:6px;">Salvar Medidas</button>
+    </div>
+    <div id="historicoMedidas" style="margin-top:10px; font-size: 14px;">Nenhum registro recente.</div>
+  </div>
+</div>
+
+<!-- CONTEÚDO: 2. GESTÃO DE TREINOS + CRONÔMETRO -->
+<div id="aba-treinos" class="tab-content">
+  <div class="card">
+    <h3>💃 2. Gestão de Treinos (Ritbox e Aulas Aeróbicas)</h3>
+    <p style="font-size: 13px; opacity: 0.8; margin-top:0;">Aulas completas em português com mais de 5 minutos de duração:</p>
+    
+    <div id="listaTreinos"></div>
+    <button onclick="sugerirSubstituto()" style="background:#2563eb; color:white; margin-top:5px;">🔄 Aparelho/Espaço Ocupado? Ver Substituto</button>
+    <div id="sugestaoSubst" style="margin-top:10px; font-size:14px; font-style:italic; color:var(--accent);"></div>
+  </div>
+
+  <!-- CRONÔMETRO PROGRESSIVO -->
+  <div class="card">
+    <h3>⏱️ Cronômetro Progressivo (0 ao Infinito)</h3>
+    <p style="font-size: 13px; opacity: 0.85; line-height: 1.5; margin-top: 0;">
+      Clique em <b>Iniciar</b> para começar a contagem do zero. Você pode pausar, continuar ou zerar a qualquer momento.
+    </p>
+    <div class="timer-box">
+      <div id="timerDisplay" class="timer-display">00:00:00</div>
+      <div class="grid-3">
+        <button onclick="iniciarCronometro()">Iniciar</button>
+        <button onclick="pausarCronometro()" style="background:#f59e0b; color:white;">Pausar</button>
+        <button onclick="retomarCronometro()" style="background:#10b981; color:white;">Continuar</button>
+      </div>
+      <button onclick="zerarCronometro()" style="background:#ef4444; color:white; margin-top:8px;">Zerar Cronômetro</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTEÚDO: 3. NUTRIÇÃO, HÁBITOS E LEMBRETES -->
+<div id="aba-nutricao" class="tab-content">
+  <div class="card">
+    <h3>🥗 3. Nutrição, Hidratação e Lembretes</h3>
+    <div class="grid-2">
+      <div>
+        <label>Data do Lembrete:</label>
+        <input id="dataLembrete" type="date" onchange="salvarLembreteDataHora()">
+      </div>
+      <div>
+        <label>Horário para Despertar:</label>
+        <input id="horaLembrete" type="time" onchange="salvarLembreteDataHora()">
+      </div>
+    </div>
+    <div id="alertaInfo" style="margin-top:8px; font-size: 13px; color:var(--accent);"></div>
+
+    <textarea id="diario" rows="3" placeholder="Diário alimentar (o que comeu hoje)..." oninput="salvarNutricao()" style="margin-top:12px;"></textarea>
+  </div>
+</div>
+
+<!-- CONTEÚDO: 4. GUIA E CONTROLE DO MOUNJARO -->
+<div id="aba-mounjaro" class="tab-content">
+  <div class="card">
+    <h3>💉 4. Guia & Controle de Aplicações Mounjaro</h3>
+    <p style="font-size: 13px; opacity: 0.9; margin-bottom: 12px;">
+      <b>💡 Dicas Nutricionais para quem usa Mounjaro:</b><br>
+      • Foque em proteínas magras (frango, ovos, peixe) em pequenas porções.<br>
+      • Hidrate-se constantemente ao longo do dia.<br>
+      • Evite alimentos gordurosos para prevenir desconfortos.
+    </p>
+    <div class="grid-2">
+      <div>
+        <label>Data da Aplicação:</label>
+        <input id="dataMounjaro" type="date">
+      </div>
+      <div>
+        <label>Dose Aplicada (mg):</label>
+        <input id="doseMounjaro" type="text" placeholder="Ex: 2.5mg ou 5mg">
+      </div>
+    </div>
+    <button onclick="salvarMounjaro()">Registrar Aplicação</button>
+    
+    <div style="margin-top: 15px;">
+      <label style="font-weight: bold; margin-bottom: 6px;">Histórico de Aplicações Semanais:</label>
+      <div id="historicoMounjaro">Nenhum registro recente.</div>
+    </div>
+  </div>
+</div>
+
+<!-- RODAPÉ -->
+<div class="footer-link">
+  <span onclick="abrirTermos()">Termos de Uso e Política de Privacidade</span>
+  <div style="margin-top: 5px; font-size: 11px; opacity: 0.6;">© 2026 Carlamitertech — Todos os direitos reservados.</div>
 </div>
 
 <!-- MODAL DE VÍDEO -->
@@ -558,16 +505,19 @@ let cronometroInterval;
 let segundosTotais = 0;
 let cronometroRodando = false;
 
-// FUNÇÃO PARA TROCAR AS ABAS DO MENU ESQUERDO
-function trocarAba(evt, idAba) {
-  const panes = document.querySelectorAll('.tab-pane');
-  panes.forEach(pane => pane.classList.remove('active-pane'));
+// FUNÇÃO DE TROCA DE ABAS
+function mudarAba(idAba) {
+  // Oculta todas as abas
+  const abas = document.querySelectorAll('.tab-content');
+  abas.forEach(aba => aba.classList.remove('active-tab'));
 
-  const buttons = document.querySelectorAll('.tab-btn');
-  buttons.forEach(btn => btn.classList.remove('active'));
+  // Remove a classe 'active' de todos os botões do menu
+  const botoes = document.querySelectorAll('.nav-btn');
+  botoes.forEach(btn => btn.classList.remove('active'));
 
-  document.getElementById(idAba).classList.add('active-pane');
-  evt.currentTarget.classList.add('active');
+  // Mostra a aba selecionada e ativa o botão correspondente
+  document.getElementById(idAba).classList.add('active-tab');
+  event.currentTarget.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
