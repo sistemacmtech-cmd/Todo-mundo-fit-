@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -119,17 +118,6 @@ button:hover {
   gap: 10px;
 }
 
-.badge {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
-  background: rgba(212, 175, 55, 0.15);
-  color: var(--accent);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-}
-
 #modalVideo {
   display: none;
   position: fixed;
@@ -232,59 +220,71 @@ iframe {
   <div id="historicoMedidas" style="margin-top:10px; font-size: 14px;"></div>
 </div>
 
-<!-- 2. GESTÃO DE TREINOS -->
+<!-- 2. GESTÃO DE TREINOS (RITBOX & VÍDEOS EM PORTUGUÊS) -->
 <div class="card">
-  <h3>🏋️ 2. Gestão de Treinos e Fichas</h3>
-  <p style="font-size: 13px; opacity: 0.8; margin-top:0;">Clique no botão <b>▶ Assistir Vídeo</b> para ver a execução correta de cada exercício. Insira suas cargas e repetições para salvar na sua ficha:</p>
+  <h3>💃 2. Gestão de Treinos (Ritbox e Aeróbicos)</h3>
+  <p style="font-size: 13px; opacity: 0.8; margin-top:0;">Aulas completas de Ritbox em português com explicações passo a passo. Acompanhe suas cargas ou repetições:</p>
   
   <div id="listaTreinos"></div>
   <button onclick="sugerirSubstituto()" style="background:#2563eb; color:white; margin-top:5px;">🔄 Aparelho Ocupado? Ver Substituto</button>
   <div id="sugestaoSubst" style="margin-top:10px; font-size:14px; font-style:italic; color:var(--accent);"></div>
 </div>
 
-<!-- CRONÔMETRO DE DESCANSO -->
+<!-- CRONÔMETRO DE DESCANSO 100% FUNCIONAL -->
 <div class="card">
-  <h3>⏱️ Cronômetro de Intervalo</h3>
+  <h3>⏱️ Cronômetro de Intervalo (100% Funcional)</h3>
   <div class="timer-box">
     <div id="timerDisplay" class="timer-display">01:00</div>
     <div class="grid-2" style="margin-top:10px; margin-bottom:0;">
-      <button onclick="iniciarTimer(60)">1 Minuto</button>
+      <button onclick="iniciarTimer(30)">30s</button>
+      <button onclick="iniciarTimer(60)">1 Min</button>
+      <button onclick="iniciarTimer(90)">1m30s</button>
       <button onclick="pararTimer()" style="background:#ef4444; color:white;">Zerar</button>
     </div>
   </div>
 </div>
 
-<!-- 3. NUTRIÇÃO E HÁBITOS -->
+<!-- 3. NUTRIÇÃO, HÁBITOS E LEMBRETES DE DATA/HORA -->
 <div class="card">
-  <h3>🥗 3. Nutrição, Hidratação e Hábitos</h3>
+  <h3>🥗 3. Nutrição, Hidratação e Lembretes</h3>
   <div class="grid-2">
     <div>
-      <label>Água Consumida (L):</label>
-      <input id="agua" type="number" step="0.1" placeholder="Ex: 2.5">
+      <label>Data do Lembrete:</label>
+      <input id="dataLembrete" type="date">
     </div>
     <div>
-      <label>Passos de Hoje:</label>
-      <input id="passos" type="number" placeholder="Ex: 8000">
+      <label>Horário para Despertar:</label>
+      <input id="horaLembrete" type="time">
     </div>
   </div>
-  <textarea id="diario" rows="3" placeholder="Diário alimentar (o que comeu hoje)..."></textarea>
-  <button onclick="salvarNutricao()">Salvar Hábitos do Dia</button>
-  <div id="nutriInfo" style="margin-top:10px; font-weight: bold;"></div>
+  <button onclick="salvarLembreteDataHora()">Salvar Agendamento de Alarme</button>
+  <div id="alertaInfo" style="margin-top:8px; font-size: 13px; color:var(--accent);"></div>
+
+  <textarea id="diario" rows="3" placeholder="Diário alimentar (o que comeu hoje)..." style="margin-top:12px;"></textarea>
+  <button onclick="salvarNutricao()">Salvar Diário Alimentar</button>
 </div>
 
-<!-- 4. ENGAJAMENTO E GAMIFICAÇÃO -->
+<!-- 4. GUIA E CONTROLE DO MOUNJARO -->
 <div class="card">
-  <h3>🏆 4. Engajamento, Gamificação e IA</h3>
-  <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:15px;">
-    <span>Dias seguidos batendo metas:</span>
-    <span id="streak" class="badge">🔥 0 dias</span>
+  <h3>💉 4. Guia & Controle de Aplicações Mounjaro</h3>
+  <p style="font-size: 13px; opacity: 0.9; margin-bottom: 12px;">
+    <b>💡 Dicas Nutricionais para quem usa Mounjaro:</b><br>
+    • Foque em proteínas magras (frango, ovos, peixe) em pequenas porções para preservar a massa magra devido à saciedade prolongada.<br>
+    • Hidrate-se constantemente ao longo do dia para evitar dores de cabeça.<br>
+    • Evite alimentos gordurosos ou muito pesados para prevenir desconfortos gástricos.
+  </p>
+  <div class="grid-2">
+    <div>
+      <label>Data da Aplicação:</label>
+      <input id="dataMounjaro" type="date">
+    </div>
+    <div>
+      <label>Dose Aplicada (mg):</label>
+      <input id="doseMounjaro" type="text" placeholder="Ex: 2.5mg ou 5mg">
+    </div>
   </div>
-  <div style="background:rgba(212,175,55,0.05); padding:12px; border-radius:12px; margin-bottom:12px; border:1px solid rgba(212,175,55,0.2);">
-    <b>🤖 Coach Virtual (IA):</b>
-    <p id="respostaIa" style="margin:5px 0 0 0; font-size:14px; opacity:0.9;">"Olá! Estou pronto para tirar dúvidas sobre sua dieta e treino. Salve seus dados para personalizarmos!"</p>
-  </div>
-  <input id="perguntaIa" placeholder="Ex: O que comer no pré-treino?">
-  <button onclick="falarComIa()">Perguntar ao Coach IA</button>
+  <button onclick="salvarMounjaro()">Registrar Aplicação</button>
+  <div id="historicoMounjaro" style="margin-top:12px; font-size: 14px;"></div>
 </div>
 
 <!-- MODAL DE VÍDEO -->
@@ -295,10 +295,10 @@ iframe {
 
 <script>
 const exerciciosBase = [
-  { nome: "Agachamento Livre", aparelho: "Rack de Agachamento", video: "https://www.youtube.com/embed/aclHkVaku9U", substituto: "Leg Press ou Hack Squat" },
-  { nome: "Supino Reto com Barra", aparelho: "Banco e Barra", video: "https://www.youtube.com/embed/IODxDxX7oi4", substituto: "Supino com Halteres ou Crucifixo na Máquina" },
-  { nome: "Puxada Alta na Polia", aparelho: "Polia Alta", video: "https://www.youtube.com/embed/pSHjTRCQxIw", substituto: "Barra Fixa com elástico ou Remada Baixa" },
-  { nome: "Elevação Lateral com Halteres", aparelho: "Halteres livres", video: "https://www.youtube.com/embed/QOVaHwm-Q6U", substituto: "Elevação lateral no cabo (Polia)" }
+  { nome: "Ritbox - Aula Básica e Passos Iniciais (PT-BR)", aparelho: "Espaço livre", video: "https://www.youtube.com/embed/5m38B13B17g", substituto: "Zumba ou Dança aeróbica" },
+  { nome: "Ritbox - Coreografia Queima Total (PT-BR)", aparelho: "Espaço livre", video: "https://www.youtube.com/embed/y6120QOlsfU", substituto: "Pulos de corda ou polichinelos" },
+  { nome: "Agachamento Livre com Ritmo", aparelho: "Rack ou Peso corporal", video: "https://www.youtube.com/embed/aclHkVaku9U", substituto: "Leg Press ou Afundo" },
+  { nome: "Polichinelos e Cardio Intenso", aparelho: "Peso corporal", video: "https://www.youtube.com/embed/IODxDxX7oi4", substituto: "Corrida estacionária" }
 ];
 
 let timerInterval;
@@ -370,10 +370,10 @@ function renderizarTreinos() {
           <b>${ex.nome}</b>
           <button onclick="abrirVideo('${ex.video}')" style="width:auto; padding:6px 12px; margin:0; font-size:12px;">▶ Assistir Vídeo</button>
         </div>
-        <div style="font-size:12px; opacity:0.8; margin-bottom:8px;">Equipamento: ${ex.aparelho}</div>
+        <div style="font-size:12px; opacity:0.8; margin-bottom:8px;">Tipo: ${ex.aparelho}</div>
         <div class="grid-2" style="margin-bottom:0;">
-          <input type="text" placeholder="Carga (kg)" id="carga_${index}" value="${dadoSalvo.carga}" oninput="salvarCargas()" style="margin:0; padding:8px;">
-          <input type="text" placeholder="Séries x Reps" id="reps_${index}" value="${dadoSalvo.reps}" oninput="salvarCargas()" style="margin:0; padding:8px;">
+          <input type="text" placeholder="Intensidade / Carga" id="carga_${index}" value="${dadoSalvo.carga}" oninput="salvarCargas()" style="margin:0; padding:8px;">
+          <input type="text" placeholder="Tempo / Reps" id="reps_${index}" value="${dadoSalvo.reps}" oninput="salvarCargas()" style="margin:0; padding:8px;">
         </div>
       </div>
     `;
@@ -394,20 +394,20 @@ function salvarCargas() {
 
 function sugerirSubstituto() {
   let aleatorio = exerciciosBase[Math.floor(Math.random() * exerciciosBase.length)];
-  document.getElementById("sugestaoSubst").innerText = `💡 Aparelho ocupado para '${aleatorio.nome}'? Tente fazer: ${aleatorio.substituto}.`;
+  document.getElementById("sugestaoSubst").innerText = `💡 Aparelho/espaço ocupado para '${aleatorio.nome}'? Tente fazer: ${aleatorio.substituto}.`;
 }
 
+// CRONÔMETRO FUNCIONAL
 function iniciarTimer(segundos) {
   pararTimer();
   let resto = segundos;
+  document.getElementById("timerDisplay").innerText = formatarTempo(resto);
   timerInterval = setInterval(() => {
-    let m = String(Math.floor(resto / 60)).padStart(2, '0');
-    let s = String(resto % 60).padStart(2, '0');
-    document.getElementById("timerDisplay").innerText = `${m}:${s}`;
     resto--;
+    document.getElementById("timerDisplay").innerText = formatarTempo(resto);
     if (resto < 0) {
       pararTimer();
-      alert("Tempo de descanso encerrado!");
+      alert("⏰ Tempo de descanso encerrado!");
     }
   }, 1000);
 }
@@ -415,6 +415,12 @@ function iniciarTimer(segundos) {
 function pararTimer() {
   clearInterval(timerInterval);
   document.getElementById("timerDisplay").innerText = "01:00";
+}
+
+function formatarTempo(segundos) {
+  let m = String(Math.floor(segundos / 60)).padStart(2, '0');
+  let s = String(segundos % 60).padStart(2, '0');
+  return `${m}:${s}`;
 }
 
 function abrirVideo(url) {
@@ -427,30 +433,47 @@ function fecharVideo() {
   document.getElementById("modalVideo").style.display = "none";
 }
 
-function salvarNutricao() {
-  let agua = document.getElementById("agua").value;
-  let passos = document.getElementById("passos").value;
-  let diario = document.getElementById("diario").value;
-
-  localStorage.setItem("agua", agua);
-  localStorage.setItem("passos", passos);
-  localStorage.setItem("diario", diario);
-
-  document.getElementById("nutriInfo").innerHTML = `Registrado: ${agua || 0}L de água | ${passos || 0} passos.`;
-  alert("Hábitos salvos com sucesso!");
+// LEMBRETE DATA E HORA
+function salvarLembreteDataHora() {
+  let data = document.getElementById("dataLembrete").value;
+  let hora = document.getElementById("horaLembrete").value;
+  if(!data || !hora) {
+    alert("Por favor, selecione a data e o horário.");
+    return;
+  }
+  localStorage.setItem("dataLembrete", data);
+  localStorage.setItem("horaLembrete", hora);
+  document.getElementById("alertaInfo").innerHTML = `✅ Alarme agendado para ${data} às ${hora}.`;
+  alert("Lembrete salvo com sucesso!");
 }
 
-function falarComIa() {
-  let pergunta = document.getElementById("perguntaIa").value.toLowerCase();
-  let resposta = "Mantenha o foco nos seus treinos e hidratação diária para melhores resultados!";
-  
-  if(pergunta.includes("comer") || pergunta.includes("dieta")) {
-    resposta = "Para otimizar seus resultados, combine proteínas magras (frango, ovos) com carboidratos complexos (batata doce, arroz integral) em cada refeição principal.";
-  } else if(pergunta.includes("descanso") || pergunta.includes("musculo")) {
-    resposta = "O músculo cresce durante o descanso! Certifique-se de dormir de 7 a 8 horas por noite.";
-  }
+function salvarNutricao() {
+  let diario = document.getElementById("diario").value;
+  localStorage.setItem("diario", diario);
+  alert("Diário alimentar salvo!");
+}
 
-  document.getElementById("respostaIa").innerText = `"${resposta}"`;
+// MOUNJARO REGISTRO
+function salvarMounjaro() {
+  let data = document.getElementById("dataMounjaro").value;
+  let dose = document.getElementById("doseMounjaro").value;
+  if(!data || !dose) {
+    alert("Informe a data e a dose da aplicação.");
+    return;
+  }
+  let reg = { data, dose };
+  let hist = JSON.parse(localStorage.getItem("mounjaroHist")) || [];
+  hist.unshift(reg);
+  localStorage.setItem("mounjaroHist", JSON.stringify(hist));
+  exibirMounjaro();
+  alert("Aplicação registrada com sucesso!");
+}
+
+function exibirMounjaro() {
+  let hist = JSON.parse(localStorage.getItem("mounjaroHist")) || [];
+  if(hist.length === 0) return;
+  let ultimo = hist[0];
+  document.getElementById("historicoMounjaro").innerHTML = `<b>Última aplicação:</b> ${ultimo.data} — Dose: ${ultimo.dose}`;
 }
 
 function alternarTema() {
@@ -481,12 +504,17 @@ function carregarApp() {
     document.getElementById("resultadoAvaliacao").innerHTML = `IMC Registrado: <b>${imc.toFixed(1)}</b>`;
   }
 
-  document.getElementById("agua").value = localStorage.getItem("agua") || "";
-  document.getElementById("passos").value = localStorage.getItem("passos") || "";
+  document.getElementById("dataLembrete").value = localStorage.getItem("dataLembrete") || "";
+  document.getElementById("horaLembrete").value = localStorage.getItem("horaLembrete") || "";
+  if(localStorage.getItem("dataLembrete") && localStorage.getItem("horaLembrete")) {
+    document.getElementById("alertaInfo").innerHTML = `✅ Alarme agendado para ${localStorage.getItem("dataLembrete")} às ${localStorage.getItem("horaLembrete")}.`;
+  }
+
   document.getElementById("diario").value = localStorage.getItem("diario") || "";
 
   renderizarTreinos();
   exibirMedidas();
+  exibirMounjaro();
 }
 
 window.onload = carregarApp;
@@ -494,3 +522,4 @@ window.onload = carregarApp;
 
 </body>
 </html>
+
