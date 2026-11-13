@@ -205,6 +205,35 @@ iframe {
   text-decoration: underline;
   font-weight: bold;
 }
+
+.photo-preview-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.photo-box {
+  flex: 1;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  position: relative;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.photo-box img {
+  max-width: 100%;
+  max-height: 180px;
+  border-radius: 8px;
+  object-fit: cover;
+  display: none;
+}
 </style>
 </head>
 <body onload="carregarApp()">
@@ -224,9 +253,9 @@ iframe {
   </button>
 </div>
 
-<!-- 1. PERFIL E AVALIAÇÃO INICIAL -->
+<!-- 1. PERFIL E FOTO ANTES E DEPOIS -->
 <div class="card">
-  <h3>👤 1. Perfil e Avaliação Inicial</h3>
+  <h3>👤 1. Perfil e Evolução (Antes & Depois)</h3>
   <div class="grid-2">
     <input id="nome" placeholder="Nome completo" oninput="salvarPerfilAutomatico()">
     <input id="email" type="email" placeholder="E-mail" oninput="salvarPerfilAutomatico()">
@@ -254,8 +283,23 @@ iframe {
       <option value="resistencia">Resistência / Condicionamento</option>
     </select>
   </div>
-  <button onclick="salvarPerfilCompleto()">Calcular Avaliação Física</button>
-  <div id="resultadoAvaliacao" style="margin-top: 15px; line-height: 1.6;"></div>
+
+  <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
+  
+  <label style="font-weight: bold; margin-bottom: 6px;">📸 Registro Fotográfico (Antes & Depois):</label>
+  <div class="photo-preview-container">
+    <div class="photo-box">
+      <span id="labelAntes" style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Foto "Antes"</span>
+      <img id="imgAntesPreview" alt="Antes">
+      <input type="file" accept="image/*" id="inputFotoAntes" onchange="salvarFoto('antes', event)" style="margin:0; font-size:11px; padding:6px;">
+    </div>
+    <div class="photo-box">
+      <span id="labelDepois" style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Foto "Depois"</span>
+      <img id="imgDepoisPreview" alt="Depois">
+      <input type="file" accept="image/*" id="inputFotoDepois" onchange="salvarFoto('depois', event)" style="margin:0; font-size:11px; padding:6px;">
+    </div>
+  </div>
+  <button onclick="limparFotos()" style="background:#ef4444; color:white; margin-top:10px; font-size: 12px; padding: 8px;">🗑️ Excluir Fotos Salvas</button>
 </div>
 
 <!-- HISTÓRICO DE MEDIDAS -->
@@ -444,32 +488,43 @@ function salvarPerfilAutomatico() {
   localStorage.setItem("perfil", JSON.stringify(perfil));
 }
 
-function salvarPerfilCompleto() {
-  salvarPerfilAutomatico();
-  let perfil = JSON.parse(localStorage.getItem("perfil"));
+function salvarFoto(tipo, event) {
+  const file = event.target.files[0];
+  if (!file) return;
 
-  if(!perfil.peso || !perfil.altura) {
-    alert("Por favor, preencha peso e altura para os cálculos.");
-    return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64Image = e.target.result;
+    localStorage.setItem(`foto_${tipo}`, base64Image);
+    exibirFoto(tipo, base64Image);
+  };
+  reader.readAsDataURL(file);
+}
+
+function exibirFoto(tipo, base64) {
+  const imgElement = document.getElementById(tipo === 'antes' ? 'imgAntesPreview' : 'imgDepoisPreview');
+  const labelElement = document.getElementById(tipo === 'antes' ? 'labelAntes' : 'labelDepois');
+  if (base64) {
+    imgElement.src = base64;
+    imgElement.style.display = 'block';
+    labelElement.style.display = 'none';
+  } else {
+    imgElement.src = '';
+    imgElement.style.display = 'none';
+    labelElement.style.display = 'block';
   }
+}
 
-  let p = parseFloat(perfil.peso);
-  let a = parseFloat(perfil.altura);
-  let id = parseInt(perfil.idade) || 25;
-
-  let imc = p / (a * a);
-  let bmr = (perfil.sexo === "masculino") 
-    ? (10 * p) + (6.25 * (a * 100)) - (5 * id) + 5
-    : (10 * p) + (6.25 * (a * 100)) - (5 * id) - 161;
-  let tdee = Math.round(bmr * 1.55);
-  let gorduraEst = (perfil.sexo === "masculino") ? (1.20 * imc) + (0.23 * id) - 16.2 : (1.20 * imc) + (0.23 * id) - 5.4;
-
-  document.getElementById("resultadoAvaliacao").innerHTML = `
-    IMC: <b>${imc.toFixed(1)}</b><br>
-    Gasto Calórico Basal Estimado: <b>~${Math.round(bmr)} kcal</b> (TDEE: ~${tdee} kcal)<br>
-    % Gordura Corporal Estimado: <b>~${gorduraEst.toFixed(1)}%</b>
-  `;
-  alert("Perfil salvo e avaliações calculadas com sucesso!");
+function limparFotos() {
+  if(confirm("Deseja realmente apagar as fotos salvas?")) {
+    localStorage.removeItem("foto_antes");
+    localStorage.removeItem("foto_depois");
+    exibirFoto('antes', null);
+    exibirFoto('depois', null);
+    document.getElementById("inputFotoAntes").value = "";
+    document.getElementById("inputFotoDepois").value = "";
+    alert("Fotos apagadas com sucesso!");
+  }
 }
 
 function salvarMedidas() {
@@ -612,12 +667,13 @@ function carregarApp() {
     document.getElementById("altura").value = perfil.altura || "";
     document.getElementById("experiencia").value = perfil.experiencia || "iniciante";
     document.getElementById("objetivo").value = perfil.objetivo || "hipertrofia";
-    
-    if(perfil.peso && perfil.altura) {
-      let imc = parseFloat(perfil.peso) / (parseFloat(perfil.altura) * parseFloat(perfil.altura));
-      document.getElementById("resultadoAvaliacao").innerHTML = `IMC Registrado: <b>${imc.toFixed(1)}</b>`;
-    }
   }
+
+  let fotoAntes = localStorage.getItem("foto_antes");
+  if (fotoAntes) exibirFoto('antes', fotoAntes);
+
+  let fotoDepois = localStorage.getItem("foto_depois");
+  if (fotoDepois) exibirFoto('depois', fotoDepois);
 
   document.getElementById("dataLembrete").value = localStorage.getItem("dataLembrete") || "";
   document.getElementById("horaLembrete").value = localStorage.getItem("horaLembrete") || "";
