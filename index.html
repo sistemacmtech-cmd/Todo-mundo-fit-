@@ -219,7 +219,7 @@ iframe {
   padding: 10px;
   text-align: center;
   position: relative;
-  min-height: 150px;
+  min-height: 180px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -229,10 +229,11 @@ iframe {
 
 .photo-box img {
   max-width: 100%;
-  max-height: 180px;
+  max-height: 150px;
   border-radius: 8px;
   object-fit: cover;
   display: none;
+  margin-bottom: 8px;
 }
 </style>
 </head>
@@ -291,12 +292,12 @@ iframe {
     <div class="photo-box">
       <span id="labelAntes" style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Foto "Antes"</span>
       <img id="imgAntesPreview" alt="Antes">
-      <input type="file" accept="image/*" id="inputFotoAntes" onchange="salvarFoto('antes', event)" style="margin:0; font-size:11px; padding:6px;">
+      <input type="file" accept="image/*" id="inputFotoAntes" onchange="processarE_SalvarFoto('antes', event)" style="margin:0; font-size:11px; padding:6px;">
     </div>
     <div class="photo-box">
       <span id="labelDepois" style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Foto "Depois"</span>
       <img id="imgDepoisPreview" alt="Depois">
-      <input type="file" accept="image/*" id="inputFotoDepois" onchange="salvarFoto('depois', event)" style="margin:0; font-size:11px; padding:6px;">
+      <input type="file" accept="image/*" id="inputFotoDepois" onchange="processarE_SalvarFoto('depois', event)" style="margin:0; font-size:11px; padding:6px;">
     </div>
   </div>
   <button onclick="limparFotos()" style="background:#ef4444; color:white; margin-top:10px; font-size: 12px; padding: 8px;">🗑️ Excluir Fotos Salvas</button>
@@ -488,15 +489,39 @@ function salvarPerfilAutomatico() {
   localStorage.setItem("perfil", JSON.stringify(perfil));
 }
 
-function salvarFoto(tipo, event) {
+function processarE_SalvarFoto(tipo, event) {
   const file = event.target.files[0];
   if (!file) return;
 
   const reader = new FileReader();
   reader.onload = function(e) {
-    const base64Image = e.target.result;
-    localStorage.setItem(`foto_${tipo}`, base64Image);
-    exibirFoto(tipo, base64Image);
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      
+      // Reduz a imagem para otimizar espaço no armazenamento do navegador
+      let largura = img.width;
+      let altura = img.height;
+      const maxDimensao = 600;
+      
+      if (largura > altura && largura > maxDimensao) {
+        altura *= maxDimensao / largura;
+        largura = maxDimensao;
+      } else if (altura > maxDimensao) {
+        largura *= maxDimensao / altura;
+        altura = maxDimensao;
+      }
+      
+      canvas.width = largura;
+      canvas.height = altura;
+      ctx.drawImage(img, 0, 0, largura, altura);
+      
+      const base64Comprimido = canvas.toDataURL('image/jpeg', 0.7);
+      localStorage.setItem(`foto_${tipo}`, base64Comprimido);
+      exibirFoto(tipo, base64Comprimido);
+    };
+    img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
