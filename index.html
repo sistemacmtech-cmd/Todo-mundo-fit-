@@ -57,6 +57,25 @@ body {
   border: 1px solid var(--border);
 }
 
+/* Slide Propaganda */
+.promo-banner {
+  background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(18,22,32,0.8));
+  border: 1px dashed var(--accent);
+  padding: 12px;
+  border-radius: 14px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: bold;
+  animation: pulsePromo 3s infinite;
+}
+@keyframes pulsePromo {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; transform: scale(1.01); }
+  100% { opacity: 0.8; }
+}
+
 h3 {
   margin-top: 0;
   font-size: 18px;
@@ -124,7 +143,7 @@ button:hover {
   gap: 8px;
 }
 
-#modalVideo {
+#modalVideo, #modalTermos {
   display: none;
   position: fixed;
   inset: 0;
@@ -134,6 +153,18 @@ button:hover {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.modal-content {
+  background: var(--card-dark);
+  border: 1px solid var(--accent);
+  padding: 25px;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  color: var(--text-dark);
 }
 
 iframe {
@@ -168,6 +199,19 @@ iframe {
   margin-bottom: 12px;
   border: 1px solid var(--border);
 }
+
+.footer-link {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+.footer-link span {
+  color: var(--accent);
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -177,6 +221,11 @@ iframe {
   <button id="temaBtn" onclick="alternarTema()" style="width:auto; padding:8px 14px; font-size:13px;">
     🌙 Modo Claro
   </button>
+</div>
+
+<!-- SLIDE / BANNER DE PROPAGANDA -->
+<div class="promo-banner">
+  🌟 Desenvolvimento Exclusivo: <b>@Carlamitertech</b> | Contato comercial: <u>sistemacmtech@gmail.com</u>
 </div>
 
 <!-- 1. PERFIL E AVALIAÇÃO INICIAL -->
@@ -237,13 +286,17 @@ iframe {
   <div id="sugestaoSubst" style="margin-top:10px; font-size:14px; font-style:italic; color:var(--accent);"></div>
 </div>
 
-<!-- CRONÔMETRO DE INTERVALO INTERATIVO -->
+<!-- CRONÔMETRO COM INSTRUÇÕES EXATAS -->
 <div class="card">
-  <h3>⏱️ Cronômetro Interativo</h3>
+  <h3>⏱️ Cronômetro e Temporizador</h3>
+  <p style="font-size: 13px; opacity: 0.85; line-height: 1.5; margin-top: 0;">
+    Toque na aba Cronômetro (ou em Timer/Temporizador, se preferir contagem regressiva).<br>
+    Clique em <b>Iniciar</b> para começar a contagem. Você pode pausar, marcar voltas ou zerar a qualquer momento.
+  </p>
   <div class="timer-box">
     <div id="timerDisplay" class="timer-display">01:00</div>
     <div class="grid-3">
-      <button onclick="iniciarTimer(60)">1 Minuto</button>
+      <button onclick="iniciarTimer(60)">Iniciar (1m)</button>
       <button onclick="pausarTimer()" style="background:#f59e0b; color:white;">Pausar</button>
       <button onclick="retomarTimer()" style="background:#10b981; color:white;">Continuar</button>
     </div>
@@ -294,14 +347,40 @@ iframe {
   <div id="historicoMounjaro" style="margin-top:12px; font-size: 14px;"></div>
 </div>
 
+<!-- RODAPÉ COM LINK PARA TERMOS E PRIVACIDADE -->
+<div class="footer-link">
+  <span onclick="abrirTermos()">Termos de Uso e Política de Privacidade</span>
+  <div style="margin-top: 5px; font-size: 11px; opacity: 0.6;">© Carlamitertech — Todos os direitos reservados.</div>
+</div>
+
 <!-- MODAL DE VÍDEO -->
 <div id="modalVideo" onclick="fecharVideo()">
   <button style="max-width:200px; background:#ef4444; color:white; margin-bottom:15px;" onclick="fecharVideo()">✕ Fechar Vídeo</button>
   <iframe id="player" src="" allowfullscreen></iframe>
 </div>
 
+<!-- MODAL DE TERMOS DE USO E PRIVACIDADE -->
+<div id="modalTermos">
+  <div class="modal-content">
+    <h3>📄 Termos de Uso e Política de Privacidade</h3>
+    <p style="font-size: 13px; line-height: 1.6;">
+      <b>1. Autoria e Direitos Autorais:</b><br>
+      Este aplicativo (<b>Todo Mundo Fit Pro</b>) foi inteiramente desenvolvido, estruturado e criado por <b>@Carlamitertech</b> (Contato: <u>sistemacmtech@gmail.com</u>). Todos os direitos intelectuais, layouts, códigos e recursos são protegidos pelas leis de propriedade intelectual.<br><br>
+
+      <b>2. Proibição de Plágio e Cópia Não Autorizada:</b><br>
+      É expressamente proibida a cópia, reprodução, redistribuição, engenharia reversa ou comercialização total ou parcial deste código, design ou funcionalidades sem a autorização prévia e expressa dos desenvolvedores da Carlamitertech. O plágio constitui crime de violação de direitos autorais.<br><br>
+
+      <b>3. Política de Privacidade e Dados:</b><br>
+      Respeitamos rigidamente a sua privacidade. Todos os dados informados pelo usuário (como peso, medidas, histórico e rotinas de treino) são armazenados exclusivamente no dispositivo local do usuário (via <i>localStorage</i> do navegador). Nenhum dado pessoal é enviado ou coletado por servidores externos da Carlamitertech.<br><br>
+
+      <b>4. Isenção de Responsabilidade Médica:</b><br>
+      Este software tem caráter informativo e de suporte à rotina fitness. Consulte um médico ou nutricionista antes de iniciar treinos intensos ou fazer uso de medicamentos como Mounjaro.
+    </p>
+    <button onclick="fecharTermos()" style="margin-top: 15px;">Entendi e Fechar</button>
+  </div>
+</div>
+
 <script>
-// Lista de exercícios atualizada com vídeos em PT-BR com mais de 5 minutos e focados em Ritbox / Aeróbicos
 const exerciciosBase = [
   { 
     nome: "Ritbox - Aula Completa 5 Minutos (PT-BR)", 
@@ -427,7 +506,7 @@ function sugerirSubstituto() {
   document.getElementById("sugestaoSubst").innerText = `💡 Aparelho/espaço ocupado para '${aleatorio.nome}'? Tente fazer: ${aleatorio.substituto}.`;
 }
 
-// CRONÔMETRO INTERATIVO COMPLETO
+// CRONÔMETRO INTERATIVO
 function iniciarTimer(segundos) {
   pararTimer();
   segundosRestantes = segundos;
@@ -485,7 +564,14 @@ function fecharVideo() {
   document.getElementById("modalVideo").style.display = "none";
 }
 
-// LEMBRETE DATA E HORA
+function abrirTermos() {
+  document.getElementById("modalTermos").style.display = "flex";
+}
+
+function fecharTermos() {
+  document.getElementById("modalTermos").style.display = "none";
+}
+
 function salvarLembreteDataHora() {
   let data = document.getElementById("dataLembrete").value;
   let hora = document.getElementById("horaLembrete").value;
@@ -505,7 +591,6 @@ function salvarNutricao() {
   alert("Diário alimentar salvo!");
 }
 
-// MOUNJARO REGISTRO
 function salvarMounjaro() {
   let data = document.getElementById("dataMounjaro").value;
   let dose = document.getElementById("doseMounjaro").value;
