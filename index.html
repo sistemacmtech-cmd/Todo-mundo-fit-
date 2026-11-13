@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Todo Mundo Fit Pro - Gold Edition</title>
+<title>🏋️ Todo Mundo Fit Pro - Gold Edition</title>
 <style>
 :root {
   --bg-dark: #0a0c10;
@@ -41,7 +41,7 @@ body {
 }
 
 .logo {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.5px;
   color: var(--accent);
@@ -65,15 +65,9 @@ body {
   border-radius: 14px;
   text-align: center;
   margin-bottom: 20px;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--accent);
   font-weight: bold;
-  animation: pulsePromo 3s infinite;
-}
-@keyframes pulsePromo {
-  0% { opacity: 0.8; }
-  50% { opacity: 1; transform: scale(1.01); }
-  100% { opacity: 0.8; }
 }
 
 h3 {
@@ -217,15 +211,18 @@ iframe {
 <body>
 
 <div class="header-flex">
-  <div class="logo">⚡ TODO MUNDO FIT PRO</div>
+  <div class="logo">🏋️ TODO MUNDO FIT PRO</div>
   <button id="temaBtn" onclick="alternarTema()" style="width:auto; padding:8px 14px; font-size:13px;">
     🌙 Modo Claro
   </button>
 </div>
 
-<!-- SLIDE / BANNER DE PROPAGANDA -->
+<!-- SLIDE / BANNER DE PROPAGANDA E DOWNLOAD -->
 <div class="promo-banner">
-  🌟 Desenvolvimento Exclusivo: <b>@Carlamitertech</b> | Contato comercial: <u>sistemacmtech@gmail.com</u>
+  🌟 Desenvolvimento Exclusivo: <b>@Carlamitertech</b> | Contato: <u>sistemacmtech@gmail.com</u><br>
+  <button onclick="baixarAppDireto()" style="margin-top: 8px; width: auto; padding: 8px 16px; font-size: 12px; background: var(--text-dark); color: var(--accent);">
+    📥 Baixar App Diretamente no Celular
+  </button>
 </div>
 
 <!-- 1. PERFIL E AVALIAÇÃO INICIAL -->
@@ -286,21 +283,20 @@ iframe {
   <div id="sugestaoSubst" style="margin-top:10px; font-size:14px; font-style:italic; color:var(--accent);"></div>
 </div>
 
-<!-- CRONÔMETRO COM INSTRUÇÕES EXATAS -->
+<!-- CRONÔMETRO PROGRESSIVO (0 AO INFINITO) -->
 <div class="card">
-  <h3>⏱️ Cronômetro e Temporizador</h3>
+  <h3>⏱️ Cronômetro Progressivo (0 ao Infinito)</h3>
   <p style="font-size: 13px; opacity: 0.85; line-height: 1.5; margin-top: 0;">
-    Toque na aba Cronômetro (ou em Timer/Temporizador, se preferir contagem regressiva).<br>
-    Clique em <b>Iniciar</b> para começar a contagem. Você pode pausar, marcar voltas ou zerar a qualquer momento.
+    Toque na aba Cronômetro. Clique em <b>Iniciar</b> para começar a contagem do zero. Você pode pausar, continuar ou zerar a qualquer momento.
   </p>
   <div class="timer-box">
-    <div id="timerDisplay" class="timer-display">01:00</div>
+    <div id="timerDisplay" class="timer-display">00:00:00</div>
     <div class="grid-3">
-      <button onclick="iniciarTimer(60)">Iniciar (1m)</button>
-      <button onclick="pausarTimer()" style="background:#f59e0b; color:white;">Pausar</button>
-      <button onclick="retomarTimer()" style="background:#10b981; color:white;">Continuar</button>
+      <button onclick="iniciarCronometro()">Iniciar</button>
+      <button onclick="pausarCronometro()" style="background:#f59e0b; color:white;">Pausar</button>
+      <button onclick="retomarCronometro()" style="background:#10b981; color:white;">Continuar</button>
     </div>
-    <button onclick="pararTimer()" style="background:#ef4444; color:white; margin-top:8px;">Zerar Cronômetro</button>
+    <button onclick="zerarCronometro()" style="background:#ef4444; color:white; margin-top:8px;">Zerar Cronômetro</button>
   </div>
 </div>
 
@@ -350,7 +346,7 @@ iframe {
 <!-- RODAPÉ COM LINK PARA TERMOS E PRIVACIDADE -->
 <div class="footer-link">
   <span onclick="abrirTermos()">Termos de Uso e Política de Privacidade</span>
-  <div style="margin-top: 5px; font-size: 11px; opacity: 0.6;">© Carlamitertech — Todos os direitos reservados.</div>
+  <div style="margin-top: 5px; font-size: 11px; opacity: 0.6;">© 2026 Carlamitertech — Todos os direitos reservados.</div>
 </div>
 
 <!-- MODAL DE VÍDEO -->
@@ -371,7 +367,7 @@ iframe {
       É expressamente proibida a cópia, reprodução, redistribuição, engenharia reversa ou comercialização total ou parcial deste código, design ou funcionalidades sem a autorização prévia e expressa dos desenvolvedores da Carlamitertech. O plágio constitui crime de violação de direitos autorais.<br><br>
 
       <b>3. Política de Privacidade e Dados:</b><br>
-      Respeitamos rigidamente a sua privacidade. Todos os dados informados pelo usuário (como peso, medidas, histórico e rotinas de treino) são armazenados exclusivamente no dispositivo local do usuário (via <i>localStorage</i> do navegador). Nenhum dado pessoal é enviado ou coletado por servidores externos da Carlamitertech.<br><br>
+      Respeitamos rigidamente a sua privacidade. Todos los dados informados pelo usuário (como peso, medidas, histórico e rotinas de treino) são armazenados exclusivamente no dispositivo local do usuário (via <i>localStorage</i> do navegador). Nenhum dado pessoal é enviado ou coletado por servidores externos da Carlamitertech.<br><br>
 
       <b>4. Isenção de Responsabilidade Médica:</b><br>
       Este software tem caráter informativo e de suporte à rotina fitness. Consulte um médico ou nutricionista antes de iniciar treinos intensos ou fazer uso de medicamentos como Mounjaro.
@@ -408,9 +404,64 @@ const exerciciosBase = [
   }
 ];
 
-let timerInterval;
-let segundosRestantes = 60;
-let emPausa = false;
+// CRONÔMETRO PROGRESSIVO (0 AO INFINITO)
+let cronometroInterval;
+let segundosTotais = 0;
+let cronometroRodando = false;
+
+function iniciarCronometro() {
+  if (cronometroRodando) return;
+  cronometroRodando = true;
+  clearInterval(cronometroInterval);
+  cronometroInterval = setInterval(() => {
+    segundosTotais++;
+    atualizarDisplayCronometro();
+  }, 1000);
+}
+
+function pausarCronometro() {
+  cronometroRodando = false;
+  clearInterval(cronometroInterval);
+}
+
+function retomarCronometro() {
+  if (!cronometroRodando && segundosTotais > 0) {
+    cronometroRodando = true;
+    cronometroInterval = setInterval(() => {
+      segundosTotais++;
+      atualizarDisplayCronometro();
+    }, 1000);
+  }
+}
+
+function zerarCronometro() {
+  cronometroRodando = false;
+  clearInterval(cronometroInterval);
+  segundosTotais = 0;
+  atualizarDisplayCronometro();
+}
+
+function atualizarDisplayCronometro() {
+  let h = String(Math.floor(segundosTotais / 3600)).padStart(2, '0');
+  let m = String(Math.floor((segundosTotais % 3600) / 60)).padStart(2, '0');
+  let s = String(segundosTotais % 60).padStart(2, '0');
+  document.getElementById("timerDisplay").innerText = `${h}:${m}:${s}`;
+}
+
+// FUNÇÃO PARA BAIXAR O APLICATIVO DIRETAMENTE NO CELULAR
+function baixarAppDireto() {
+  const htmlContent = document.documentElement.outerHTML;
+  const blob = new Blob([htmlContent], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'todo-mundo-fit-pro.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  alert("Aplicativo baixado com sucesso! Você já pode abrir o arquivo diretamente no seu celular.");
+}
 
 function salvarPerfilCompleto() {
   const perfil = {
@@ -504,54 +555,6 @@ function salvarCargas() {
 function sugerirSubstituto() {
   let aleatorio = exerciciosBase[Math.floor(Math.random() * exerciciosBase.length)];
   document.getElementById("sugestaoSubst").innerText = `💡 Aparelho/espaço ocupado para '${aleatorio.nome}'? Tente fazer: ${aleatorio.substituto}.`;
-}
-
-// CRONÔMETRO INTERATIVO
-function iniciarTimer(segundos) {
-  pararTimer();
-  segundosRestantes = segundos;
-  emPausa = false;
-  rodarCronometro();
-}
-
-function pausarTimer() {
-  emPausa = true;
-  clearInterval(timerInterval);
-}
-
-function retomarTimer() {
-  if (emPausa) {
-    emPausa = false;
-    rodarCronometro();
-  }
-}
-
-function rodarCronometro() {
-  clearInterval(timerInterval);
-  document.getElementById("timerDisplay").innerText = formatarTempo(segundosRestantes);
-  timerInterval = setInterval(() => {
-    if (!emPausa) {
-      segundosRestantes--;
-      document.getElementById("timerDisplay").innerText = formatarTempo(segundosRestantes);
-      if (segundosRestantes < 0) {
-        pararTimer();
-        alert("⏰ Tempo de descanso encerrado!");
-      }
-    }
-  }, 1000);
-}
-
-function pararTimer() {
-  clearInterval(timerInterval);
-  segundosRestantes = 60;
-  emPausa = false;
-  document.getElementById("timerDisplay").innerText = "01:00";
-}
-
-function formatarTempo(segundos) {
-  let m = String(Math.floor(segundos / 60)).padStart(2, '0');
-  let s = String(segundos % 60).padStart(2, '0');
-  return `${m}:${s}`;
 }
 
 function abrirVideo(url) {
