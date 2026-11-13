@@ -216,11 +216,11 @@ iframe {
   </button>
 </div>
 
-<!-- BANNER DE PROPAGANDA E INSTALAÇÃO DIRETA -->
+<!-- BANNER DE PROPAGANDA E BOTÃO CRIAR ATALHO -->
 <div class="promo-banner">
   🌟 Desenvolvimento Exclusivo: <b>@Carlamitertech</b> | Contato: <u>sistemacmtech@gmail.com</u><br>
-  <button onclick="baixarAppDireto()" style="margin-top: 10px; width: 100%; padding: 12px; font-size: 14px; background: var(--text-dark); color: var(--accent);">
-    📥 Baixar e Instalar no Celular Agora
+  <button onclick="criarAtalhoCelular()" style="margin-top: 10px; width: 100%; padding: 12px; font-size: 14px; background: var(--text-dark); color: var(--accent);">
+    📱 Criar Atalho na Tela do Celular
   </button>
 </div>
 
@@ -423,19 +423,14 @@ function atualizarDisplayCronometro() {
   document.getElementById("timerDisplay").innerText = `${h}:${m}:${s}`;
 }
 
-// DOWNLOAD OTIMIZADO PARA CELULAR
-function baixarAppDireto() {
-  const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
-  const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'todo-mundo-fit-pro.html';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-  alert("✨ Download iniciado! Dica: Para instalar como aplicativo na tela inicial do celular, abra o arquivo baixado no navegador do seu celular (Chrome ou Safari) e selecione a opção 'Adicionar à Tela Inicial' no menu.");
+// FUNÇÃO PARA CRIAR ATALHO DIRETO NA TELA DO CELULAR
+function criarAtalhoCelular() {
+  let isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  if (isIOS) {
+    alert("📱 Para adicionar à tela inicial no iPhone:\n\n1. Toque no botão de Compartilhar (quadrado com seta para cima) na barra inferior do Safari.\n2. Role para baixo e selecione 'Adicionar à Tela de Início'.");
+  } else {
+    alert("📱 Para adicionar à tela inicial no Android:\n\n1. Toque no menu do navegador (três pontos no canto superior direito).\n2. Selecione 'Adicionar à tela inicial' ou 'Instalar aplicativo'.");
+  }
 }
 
 function salvarPerfilCompleto() {
