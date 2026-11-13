@@ -3,583 +3,492 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>Todo Mundo Fit</title>
-
+<title>Todo Mundo Fit Pro - Gold Edition</title>
 <style>
-
-body{
-font-family:Arial,sans-serif;
-background:#0f172a;
-color:white;
-padding:15px;
-margin:0;
-transition:.3s;
+:root {
+  --bg-dark: #0a0c10;
+  --card-dark: #121620;
+  --text-dark: #f1f5f9;
+  --accent: #d4af37; /* Dourado Principal */
+  --accent-hover: #b89728;
+  --border: #222838;
 }
 
-.claro{
-background:#f8fafc;
-color:#111827;
+body.claro {
+  --bg-dark: #f8fafc;
+  --card-dark: #ffffff;
+  --text-dark: #0f172a;
+  --accent: #b8860b; /* Dourado escuro para modo claro */
+  --accent-hover: #996515;
+  --border: #e2e8f0;
 }
 
-.card{
-background:#1e293b;
-padding:15px;
-border-radius:15px;
-margin-bottom:15px;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-dark);
+  padding: 20px;
+  max-width: 650px;
+  margin: 0 auto;
+  transition: background 0.3s, color 0.3s;
 }
 
-.claro .card{
-background:white;
-color:#111827;
+.header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.logo{
-font-size:28px;
-text-align:center;
-font-weight:bold;
-margin-bottom:15px;
+.logo {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--accent);
+  text-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
 }
 
-input,textarea,button{
-width:100%;
-padding:10px;
-margin-top:5px;
-margin-bottom:10px;
-border-radius:10px;
-border:none;
+.card {
+  background: var(--card-dark);
+  padding: 20px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border);
 }
 
-button{
-background:#22c55e;
-color:white;
-font-weight:bold;
-cursor:pointer;
+h3 {
+  margin-top: 0;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
 }
 
-#modalVideo{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.9);
-padding:20px;
-z-index:1000;
+label {
+  font-size: 13px;
+  opacity: 0.8;
+  display: block;
+  margin-top: 8px;
 }
 
-iframe{
-width:100%;
-height:300px;
-border:none;
+input, select, textarea, button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: inherit;
+  font-size: 15px;
+  box-sizing: border-box;
 }
 
+body.claro input, body.claro select, body.claro textarea {
+  background: #f8fafc;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--accent);
+}
+
+button {
+  background: var(--accent);
+  color: #000;
+  font-weight: 800;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button:hover {
+  background: var(--accent-hover);
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--accent);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+#modalVideo {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  padding: 20px;
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+iframe {
+  width: 100%;
+  max-width: 500px;
+  height: 280px;
+  border-radius: 12px;
+  border: none;
+}
+
+.timer-box {
+  text-align: center;
+  background: rgba(212, 175, 55, 0.05);
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 10px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.timer-display {
+  font-size: 36px;
+  font-weight: 900;
+  font-family: monospace;
+  color: var(--accent);
+}
+
+.exercise-item {
+  background: rgba(255,255,255,0.02);
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+}
 </style>
 </head>
 <body>
 
-<div class="logo">🏋️ TODO MUNDO FIT</div>
-
-<button id="temaBtn" onclick="alternarTema()">
-🌙 Modo Claro
-</button>
-
-<div class="card">
-
-<h3>👤 Perfil</h3>
-
-<input id="nome" placeholder="Nome">
-<input id="idade" type="number" placeholder="Idade">
-<input id="sexo" placeholder="Sexo">
-<input id="objetivo" placeholder="Objetivo">
-
-<button onclick="salvarPerfil()">
-Salvar Perfil
-</button>
-
+<div class="header-flex">
+  <div class="logo">⚡ TODO MUNDO FIT PRO</div>
+  <button id="temaBtn" onclick="alternarTema()" style="width:auto; padding:8px 14px; font-size:13px;">
+    🌙 Modo Claro
+  </button>
 </div>
 
+<!-- 1. PERFIL E AVALIAÇÃO INICIAL -->
 <div class="card">
-
-<h3>📊 Avaliação Física</h3>
-
-<input id="peso" type="number" placeholder="Peso (kg)">
-<input id="altura" type="number" step="0.01" placeholder="Altura (m)">
-<input id="metaPeso" type="number" placeholder="Meta (kg)">
-
-<button onclick="calcularIMC()">
-Calcular
-</button>
-
-<div id="resultado"></div>
-
+  <h3>👤 1. Perfil e Avaliação Inicial</h3>
+  <div class="grid-2">
+    <input id="nome" placeholder="Nome completo">
+    <input id="email" type="email" placeholder="E-mail">
+  </div>
+  <div class="grid-2">
+    <input id="idade" type="number" placeholder="Idade (anos)">
+    <select id="sexo">
+      <option value="masculino">Masculino</option>
+      <option value="feminino">Feminino</option>
+    </select>
+  </div>
+  <div class="grid-2">
+    <input id="peso" type="number" step="0.1" placeholder="Peso atual (kg)">
+    <input id="altura" type="number" step="0.01" placeholder="Altura (ex: 1.75)">
+  </div>
+  <div class="grid-2">
+    <select id="experiencia">
+      <option value="iniciante">Iniciante</option>
+      <option value="intermediario">Intermediário</option>
+      <option value="avancado">Avançado</option>
+    </select>
+    <select id="objetivo">
+      <option value="hipertrofia">Hipertrofia</option>
+      <option value="emagrecimento">Emagrecimento</option>
+      <option value="resistencia">Resistência / Condicionamento</option>
+    </select>
+  </div>
+  <button onclick="salvarPerfilCompleto()">Salvar Perfil e Avaliação</button>
+  <div id="resultadoAvaliacao" style="margin-top: 15px; line-height: 1.6;"></div>
 </div>
 
+<!-- HISTÓRICO DE MEDIDAS -->
 <div class="card">
-
-<h3>💧 Hidratação</h3>
-
-<input id="metaAgua" type="number" step="0.1" placeholder="Meta de água (L)">
-<input id="agua" type="number" step="0.1" placeholder="Água consumida hoje (L)">
-
-<button onclick="calcularMetaIdeal()">
-Meta Ideal Automática
-</button>
-
-<button onclick="salvarAgua()">
-Salvar Consumo
-</button>
-
-<div id="aguaInfo"></div>
-
-<h3 id="streak">
-🔥 0 dias
-</h3>
-
+  <h3>📏 Histórico de Medidas Corporais</h3>
+  <div class="grid-2">
+    <input id="cintura" type="number" step="0.1" placeholder="Cintura (cm)">
+    <input id="braco" type="number" step="0.1" placeholder="Braço (cm)">
+  </div>
+  <div class="grid-2">
+    <input id="perna" type="number" step="0.1" placeholder="Perna (cm)">
+    <button onclick="salvarMedidas()" style="margin-top:6px;">Salvar Medidas</button>
+  </div>
+  <div id="historicoMedidas" style="margin-top:10px; font-size: 14px;"></div>
 </div>
 
+<!-- 2. GESTÃO DE TREINOS -->
 <div class="card">
-
-<h3>💡 Dica do Dia</h3>
-
-<div id="dica"></div>
-
+  <h3>🏋️ 2. Gestão de Treinos e Fichas</h3>
+  <p style="font-size: 13px; opacity: 0.8; margin-top:0;">Clique no botão <b>▶ Assistir Vídeo</b> para ver a execução correta de cada exercício. Insira suas cargas e repetições para salvar na sua ficha:</p>
+  
+  <div id="listaTreinos"></div>
+  <button onclick="sugerirSubstituto()" style="background:#2563eb; color:white; margin-top:5px;">🔄 Aparelho Ocupado? Ver Substituto</button>
+  <div id="sugestaoSubst" style="margin-top:10px; font-size:14px; font-style:italic; color:var(--accent);"></div>
 </div>
 
+<!-- CRONÔMETRO DE DESCANSO -->
 <div class="card">
-
-<h3>🔥 Treino do Dia</h3>
-
-<div id="treino"></div>
-
+  <h3>⏱️ Cronômetro de Intervalo</h3>
+  <div class="timer-box">
+    <div id="timerDisplay" class="timer-display">01:00</div>
+    <div class="grid-2" style="margin-top:10px; margin-bottom:0;">
+      <button onclick="iniciarTimer(60)">1 Minuto</button>
+      <button onclick="pararTimer()" style="background:#ef4444; color:white;">Zerar</button>
+    </div>
+  </div>
 </div>
 
+<!-- 3. NUTRIÇÃO E HÁBITOS -->
 <div class="card">
-
-<h3>🍽 Diário Alimentar</h3>
-
-<textarea id="diario" rows="5"></textarea>
-
-<button onclick="salvarDiario()">
-Salvar Diário
-</button>
-
+  <h3>🥗 3. Nutrição, Hidratação e Hábitos</h3>
+  <div class="grid-2">
+    <div>
+      <label>Água Consumida (L):</label>
+      <input id="agua" type="number" step="0.1" placeholder="Ex: 2.5">
+    </div>
+    <div>
+      <label>Passos de Hoje:</label>
+      <input id="passos" type="number" placeholder="Ex: 8000">
+    </div>
+  </div>
+  <textarea id="diario" rows="3" placeholder="Diário alimentar (o que comeu hoje)..."></textarea>
+  <button onclick="salvarNutricao()">Salvar Hábitos do Dia</button>
+  <div id="nutriInfo" style="margin-top:10px; font-weight: bold;"></div>
 </div>
 
+<!-- 4. ENGAJAMENTO E GAMIFICAÇÃO -->
 <div class="card">
-
-<h3>⏰ Lembrete de Água</h3>
-
-<input id="horaLembrete" type="time">
-
-<button onclick="salvarLembrete()">
-Salvar Horário
-</button>
-
+  <h3>🏆 4. Engajamento, Gamificação e IA</h3>
+  <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:15px;">
+    <span>Dias seguidos batendo metas:</span>
+    <span id="streak" class="badge">🔥 0 dias</span>
+  </div>
+  <div style="background:rgba(212,175,55,0.05); padding:12px; border-radius:12px; margin-bottom:12px; border:1px solid rgba(212,175,55,0.2);">
+    <b>🤖 Coach Virtual (IA):</b>
+    <p id="respostaIa" style="margin:5px 0 0 0; font-size:14px; opacity:0.9;">"Olá! Estou pronto para tirar dúvidas sobre sua dieta e treino. Salve seus dados para personalizarmos!"</p>
+  </div>
+  <input id="perguntaIa" placeholder="Ex: O que comer no pré-treino?">
+  <button onclick="falarComIa()">Perguntar ao Coach IA</button>
 </div>
 
-<div id="modalVideo">
-
-<button onclick="fecharVideo()">
-Fechar Vídeo
-</button>
-
-<br><br>
-
-<iframe id="player" allowfullscreen></iframe>
-
+<!-- MODAL DE VÍDEO -->
+<div id="modalVideo" onclick="fecharVideo()">
+  <button style="max-width:200px; background:#ef4444; color:white; margin-bottom:15px;" onclick="fecharVideo()">✕ Fechar Vídeo</button>
+  <iframe id="player" src="" allowfullscreen></iframe>
 </div>
 
 <script>
-
-const dicas=[
-"Beba mais água hoje.",
-"Evite refrigerantes.",
-"Caminhe 30 minutos.",
-"Durma pelo menos 8 horas.",
-"Consuma frutas diariamente.",
-"Evite alimentos ultraprocessados."
+const exerciciosBase = [
+  { nome: "Agachamento Livre", aparelho: "Rack de Agachamento", video: "https://www.youtube.com/embed/aclHkVaku9U", substituto: "Leg Press ou Hack Squat" },
+  { nome: "Supino Reto com Barra", aparelho: "Banco e Barra", video: "https://www.youtube.com/embed/IODxDxX7oi4", substituto: "Supino com Halteres ou Crucifixo na Máquina" },
+  { nome: "Puxada Alta na Polia", aparelho: "Polia Alta", video: "https://www.youtube.com/embed/pSHjTRCQxIw", substituto: "Barra Fixa com elástico ou Remada Baixa" },
+  { nome: "Elevação Lateral com Halteres", aparelho: "Halteres livres", video: "https://www.youtube.com/embed/QOVaHwm-Q6U", substituto: "Elevação lateral no cabo (Polia)" }
 ];
 
-const exercicios=[
+let timerInterval;
 
-{
-nome:"Agachamento",
-video:"https://www.youtube.com/embed/aclHkVaku9U"
-},
+function salvarPerfilCompleto() {
+  const perfil = {
+    nome: document.getElementById("nome").value,
+    email: document.getElementById("email").value,
+    idade: parseInt(document.getElementById("idade").value) || 25,
+    sexo: document.getElementById("sexo").value,
+    peso: parseFloat(document.getElementById("peso").value),
+    altura: parseFloat(document.getElementById("altura").value),
+    experiencia: document.getElementById("experiencia").value,
+    objetivo: document.getElementById("objetivo").value
+  };
 
-{
-nome:"Flexão",
-video:"https://www.youtube.com/embed/IODxDxX7oi4"
-},
+  if(!perfil.peso || !perfil.altura) {
+    alert("Por favor, preencha peso e altura para os cálculos.");
+    return;
+  }
 
-{
-nome:"Prancha",
-video:"https://www.youtube.com/embed/pSHjTRCQxIw"
-},
+  localStorage.setItem("perfil", JSON.stringify(perfil));
 
-{
-nome:"Afundo",
-video:"https://www.youtube.com/embed/QOVaHwm-Q6U"
+  let imc = perfil.peso / (perfil.altura * perfil.altura);
+  let bmr = (perfil.sexo === "masculino") 
+    ? (10 * perfil.peso) + (6.25 * (perfil.altura * 100)) - (5 * perfil.idade) + 5
+    : (10 * perfil.peso) + (6.25 * (perfil.altura * 100)) - (5 * perfil.idade) - 161;
+  let tdee = Math.round(bmr * 1.55);
+  let gorduraEst = (perfil.sexo === "masculino") ? (1.20 * imc) + (0.23 * perfil.idade) - 16.2 : (1.20 * imc) + (0.23 * perfil.idade) - 5.4;
+
+  document.getElementById("resultadoAvaliacao").innerHTML = `
+    IMC: <b>${imc.toFixed(1)}</b><br>
+    Gasto Calórico Basal Estimado: <b>~${Math.round(bmr)} kcal</b> (TDEE total: ~${tdee} kcal)<br>
+    % Gordura Corporal Estimado: <b>~${gorduraEst.toFixed(1)}%</b>
+  `;
+  alert("Perfil e avaliações calculadas com sucesso!");
 }
 
-];
-
-function salvarPerfil(){
-
-const perfil={
-nome:nome.value,
-idade:idade.value,
-sexo:sexo.value,
-objetivo:objetivo.value
-};
-
-localStorage.setItem(
-"perfil",
-JSON.stringify(perfil)
-);
-
-alert("Perfil salvo");
-
+function salvarMedidas() {
+  let medidas = {
+    data: new Date().toLocaleDateString(),
+    cintura: document.getElementById("cintura").value,
+    braco: document.getElementById("braco").value,
+    perna: document.getElementById("perna").value
+  };
+  let hist = JSON.parse(localStorage.getItem("medidasHist")) || [];
+  hist.unshift(medidas);
+  localStorage.setItem("medidasHist", JSON.stringify(hist));
+  exibirMedidas();
+  alert("Medidas registradas!");
 }
 
-function calcularIMC(){
-
-let peso=parseFloat(
-document.getElementById("peso").value
-);
-
-let altura=parseFloat(
-document.getElementById("altura").value
-);
-
-let meta=document.getElementById("metaPeso").value;
-
-if(!peso || !altura) return;
-
-let imc=
-peso/(altura*altura);
-
-let status="";
-
-if(imc<18.5)
-status="Abaixo do peso";
-else if(imc<25)
-status="Peso ideal";
-else if(imc<30)
-status="Sobrepeso";
-else
-status="Obesidade";
-
-let massa=
-(peso*0.75).toFixed(1);
-
-resultado.innerHTML=
-`
-IMC: <b>${imc.toFixed(1)}</b><br>
-Status: <b>${status}</b><br>
-Massa magra estimada:
-<b>${massa}kg</b><br>
-Meta:
-<b>${meta}kg</b>
-`;
-
-localStorage.setItem("peso",peso);
-localStorage.setItem("altura",altura);
-localStorage.setItem("metaPeso",meta);
-
+function exibirMedidas() {
+  let hist = JSON.parse(localStorage.getItem("medidasHist")) || [];
+  if(hist.length === 0) return;
+  let ultimo = hist[0];
+  document.getElementById("historicoMedidas").innerHTML = `Último registro (${ultimo.data}): Cintura: ${ultimo.cintura || '-'}cm | Braço: ${ultimo.braco || '-'}cm | Perna: ${ultimo.perna || '-'}cm`;
 }
 
-function calcularMetaIdeal(){
-
-let peso=
-parseFloat(
-document.getElementById("peso").value
-);
-
-if(!peso) return;
-
-let meta=
-((peso*35)/1000)
-.toFixed(1);
-
-metaAgua.value=meta;
-
+function renderizarTreinos() {
+  let html = "";
+  let cargasSalvas = JSON.parse(localStorage.getItem("cargasTreino")) || {};
+  
+  exerciciosBase.forEach((ex, index) => {
+    let dadoSalvo = cargasSalvas[index] || { carga: "", reps: "" };
+    html += `
+      <div class="exercise-item">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <b>${ex.nome}</b>
+          <button onclick="abrirVideo('${ex.video}')" style="width:auto; padding:6px 12px; margin:0; font-size:12px;">▶ Assistir Vídeo</button>
+        </div>
+        <div style="font-size:12px; opacity:0.8; margin-bottom:8px;">Equipamento: ${ex.aparelho}</div>
+        <div class="grid-2" style="margin-bottom:0;">
+          <input type="text" placeholder="Carga (kg)" id="carga_${index}" value="${dadoSalvo.carga}" oninput="salvarCargas()" style="margin:0; padding:8px;">
+          <input type="text" placeholder="Séries x Reps" id="reps_${index}" value="${dadoSalvo.reps}" oninput="salvarCargas()" style="margin:0; padding:8px;">
+        </div>
+      </div>
+    `;
+  });
+  document.getElementById("listaTreinos").innerHTML = html;
 }
 
-function salvarAgua(){
-
-let litros=
-parseFloat(
-agua.value
-);
-
-let meta=
-parseFloat(
-metaAgua.value
-);
-
-if(isNaN(meta) || meta<1 || meta>10){
-
-alert("Meta entre 1L e 10L");
-return;
-
+function salvarCargas() {
+  let cargasSalvas = {};
+  exerciciosBase.forEach((ex, index) => {
+    cargasSalvas[index] = {
+      carga: document.getElementById(`carga_${index}`).value,
+      reps: document.getElementById(`reps_${index}`).value
+    };
+  });
+  localStorage.setItem("cargasTreino", JSON.stringify(cargasSalvas));
 }
 
-if(isNaN(litros) || litros<0 || litros>15){
-
-alert("Consumo entre 0L e 15L");
-return;
-
+function sugerirSubstituto() {
+  let aleatorio = exerciciosBase[Math.floor(Math.random() * exerciciosBase.length)];
+  document.getElementById("sugestaoSubst").innerText = `💡 Aparelho ocupado para '${aleatorio.nome}'? Tente fazer: ${aleatorio.substituto}.`;
 }
 
-localStorage.setItem(
-"metaAgua",
-meta
-);
-
-let hist=
-JSON.parse(
-localStorage.getItem("aguaHist")
-)
-|| [];
-
-let hoje=
-new Date()
-.toISOString()
-.split("T")[0];
-
-let r=
-hist.find(x=>x.data===hoje);
-
-if(r){
-
-r.litros=litros;
-
-}else{
-
-hist.push({
-data:hoje,
-litros:litros
-});
-
+function iniciarTimer(segundos) {
+  pararTimer();
+  let resto = segundos;
+  timerInterval = setInterval(() => {
+    let m = String(Math.floor(resto / 60)).padStart(2, '0');
+    let s = String(resto % 60).padStart(2, '0');
+    document.getElementById("timerDisplay").innerText = `${m}:${s}`;
+    resto--;
+    if (resto < 0) {
+      pararTimer();
+      alert("Tempo de descanso encerrado!");
+    }
+  }, 1000);
 }
 
-localStorage.setItem(
-"aguaHist",
-JSON.stringify(hist)
-);
-
-aguaInfo.innerHTML=
-`${litros}L de ${meta}L`;
-
-calcularStreak();
-
+function pararTimer() {
+  clearInterval(timerInterval);
+  document.getElementById("timerDisplay").innerText = "01:00";
 }
 
-function calcularStreak(){
-
-let hist=
-JSON.parse(
-localStorage.getItem("aguaHist")
-)||[];
-
-let meta=
-parseFloat(
-localStorage.getItem("metaAgua")
-)||3;
-
-let total=
-hist.filter(
-x=>x.litros>=meta
-).length;
-
-streak.innerHTML=
-"🔥 "+total+" dias";
-
+function abrirVideo(url) {
+  document.getElementById("player").src = url;
+  document.getElementById("modalVideo").style.display = "flex";
 }
 
-function gerarDica(){
-
-dica.innerHTML=
-dicas[
-Math.floor(
-Math.random()*dicas.length
-)
-];
-
+function fecharVideo() {
+  document.getElementById("player").src = "";
+  document.getElementById("modalVideo").style.display = "none";
 }
 
-function gerarTreino(){
+function salvarNutricao() {
+  let agua = document.getElementById("agua").value;
+  let passos = document.getElementById("passos").value;
+  let diario = document.getElementById("diario").value;
 
-let html="";
+  localStorage.setItem("agua", agua);
+  localStorage.setItem("passos", passos);
+  localStorage.setItem("diario", diario);
 
-for(let i=0;i<3;i++){
-
-let ex=
-exercicios[
-Math.floor(
-Math.random()*exercicios.length
-)
-];
-
-html+=`
-<p>
-✅ ${ex.nome}
-</p>
-
-<button onclick="abrirVideo('${ex.video}')">
-▶ Assistir Aula
-</button>
-`;
-
+  document.getElementById("nutriInfo").innerHTML = `Registrado: ${agua || 0}L de água | ${passos || 0} passos.`;
+  alert("Hábitos salvos com sucesso!");
 }
 
-treino.innerHTML=html;
+function falarComIa() {
+  let pergunta = document.getElementById("perguntaIa").value.toLowerCase();
+  let resposta = "Mantenha o foco nos seus treinos e hidratação diária para melhores resultados!";
+  
+  if(pergunta.includes("comer") || pergunta.includes("dieta")) {
+    resposta = "Para otimizar seus resultados, combine proteínas magras (frango, ovos) com carboidratos complexos (batata doce, arroz integral) em cada refeição principal.";
+  } else if(pergunta.includes("descanso") || pergunta.includes("musculo")) {
+    resposta = "O músculo cresce durante o descanso! Certifique-se de dormir de 7 a 8 horas por noite.";
+  }
 
+  document.getElementById("respostaIa").innerText = `"${resposta}"`;
 }
 
-function abrirVideo(url){
-
-player.src=url;
-
-modalVideo.style.display="block";
-
+function alternarTema() {
+  document.body.classList.toggle("claro");
+  const isClaro = document.body.classList.contains("claro");
+  document.getElementById("temaBtn").innerHTML = isClaro ? "☀️ Modo Escuro" : "🌙 Modo Claro";
+  localStorage.setItem("tema", isClaro ? "claro" : "escuro");
 }
 
-function fecharVideo(){
+function carregarApp() {
+  if (localStorage.getItem("tema") === "claro") {
+    document.body.classList.add("claro");
+    document.getElementById("temaBtn").innerHTML = "☀️ Modo Escuro";
+  }
 
-player.src="";
+  let perfil = JSON.parse(localStorage.getItem("perfil"));
+  if (perfil) {
+    document.getElementById("nome").value = perfil.nome || "";
+    document.getElementById("email").value = perfil.email || "";
+    document.getElementById("idade").value = perfil.idade || "";
+    document.getElementById("sexo").value = perfil.sexo || "masculino";
+    document.getElementById("peso").value = perfil.peso || "";
+    document.getElementById("altura").value = perfil.altura || "";
+    document.getElementById("experiencia").value = perfil.experiencia || "iniciante";
+    document.getElementById("objetivo").value = perfil.objetivo || "hipertrofia";
+    
+    let imc = perfil.peso / (perfil.altura * perfil.altura);
+    document.getElementById("resultadoAvaliacao").innerHTML = `IMC Registrado: <b>${imc.toFixed(1)}</b>`;
+  }
 
-modalVideo.style.display="none";
+  document.getElementById("agua").value = localStorage.getItem("agua") || "";
+  document.getElementById("passos").value = localStorage.getItem("passos") || "";
+  document.getElementById("diario").value = localStorage.getItem("diario") || "";
 
+  renderizarTreinos();
+  exibirMedidas();
 }
 
-function salvarDiario(){
-
-localStorage.setItem(
-"diario",
-diario.value
-);
-
-alert("Diário salvo");
-
-}
-
-function salvarLembrete(){
-
-localStorage.setItem(
-"horaLembrete",
-horaLembrete.value
-);
-
-alert("Lembrete salvo");
-
-}
-
-function alternarTema(){
-
-document.body
-.classList
-.toggle("claro");
-
-if(
-document.body
-.classList
-.contains("claro")
-){
-
-temaBtn.innerHTML=
-"☀️ Modo Escuro";
-
-localStorage.setItem(
-"tema",
-"claro"
-);
-
-}else{
-
-temaBtn.innerHTML=
-"🌙 Modo Claro";
-
-localStorage.setItem(
-"tema",
-"escuro"
-);
-
-}
-
-}
-
-function carregar(){
-
-if(
-localStorage.getItem("tema")
-==="claro"
-){
-
-document.body
-.classList
-.add("claro");
-
-temaBtn.innerHTML=
-"☀️ Modo Escuro";
-
-}
-
-diario.value=
-localStorage.getItem("diario")
-||"";
-
-metaAgua.value=
-localStorage.getItem("metaAgua")
-||"3";
-
-gerarDica();
-gerarTreino();
-calcularStreak();
-
-}
-
-Notification.requestPermission();
-
-setInterval(()=>{
-
-let hora=
-localStorage.getItem(
-"horaLembrete"
-);
-
-if(!hora) return;
-
-let agora=new Date();
-
-let atual=
-String(
-agora.getHours()
-).padStart(2,"0")
-+":"
-+
-String(
-agora.getMinutes()
-).padStart(2,"0");
-
-if(
-hora===atual &&
-Notification.permission==="granted"
-){
-
-new Notification(
-"💧 Todo Mundo Fit",
-{
-body:"Hora de beber água!"
-}
-);
-
-}
-
-},60000);
-
-carregar();
-
+window.onload = carregarApp;
 </script>
 
 </body>
