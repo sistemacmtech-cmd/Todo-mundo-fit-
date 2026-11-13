@@ -2,14 +2,14 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>🏋️ Todo Mundo Fit Pro - Gold Edition</title>
 <style>
 :root {
   --bg-dark: #0a0c10;
   --card-dark: #121620;
   --text-dark: #f1f5f9;
-  --accent: #d4af37; /* Dourado Principal */
+  --accent: #d4af37;
   --accent-hover: #b89728;
   --border: #222838;
 }
@@ -18,7 +18,7 @@ body.claro {
   --bg-dark: #f8fafc;
   --card-dark: #ffffff;
   --text-dark: #0f172a;
-  --accent: #b8860b; /* Dourado escuro para modo claro */
+  --accent: #b8860b;
   --accent-hover: #996515;
   --border: #e2e8f0;
 }
@@ -27,7 +27,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background: var(--bg-dark);
   color: var(--text-dark);
-  padding: 20px;
+  padding: 15px;
   max-width: 650px;
   margin: 0 auto;
   transition: background 0.3s, color 0.3s;
@@ -41,7 +41,7 @@ body {
 }
 
 .logo {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 800;
   letter-spacing: -0.5px;
   color: var(--accent);
@@ -50,14 +50,13 @@ body {
 
 .card {
   background: var(--card-dark);
-  padding: 20px;
+  padding: 18px;
   border-radius: 20px;
   margin-bottom: 20px;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
   border: 1px solid var(--border);
 }
 
-/* Slide Propaganda */
 .promo-banner {
   background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(18,22,32,0.8));
   border: 1px dashed var(--accent);
@@ -72,7 +71,7 @@ body {
 
 h3 {
   margin-top: 0;
-  font-size: 18px;
+  font-size: 17px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -217,11 +216,11 @@ iframe {
   </button>
 </div>
 
-<!-- SLIDE / BANNER DE PROPAGANDA E DOWNLOAD -->
+<!-- BANNER DE PROPAGANDA E INSTALAÇÃO DIRETA -->
 <div class="promo-banner">
   🌟 Desenvolvimento Exclusivo: <b>@Carlamitertech</b> | Contato: <u>sistemacmtech@gmail.com</u><br>
-  <button onclick="baixarAppDireto()" style="margin-top: 8px; width: auto; padding: 8px 16px; font-size: 12px; background: var(--text-dark); color: var(--accent);">
-    📥 Baixar App Diretamente no Celular
+  <button onclick="baixarAppDireto()" style="margin-top: 10px; width: 100%; padding: 12px; font-size: 14px; background: var(--text-dark); color: var(--accent);">
+    📥 Baixar e Instalar no Celular Agora
   </button>
 </div>
 
@@ -273,21 +272,21 @@ iframe {
   <div id="historicoMedidas" style="margin-top:10px; font-size: 14px;"></div>
 </div>
 
-<!-- 2. GESTÃO DE TREINOS (RITBOX & VÍDEOS > 5 MIN EM PT-BR) -->
+<!-- 2. GESTÃO DE TREINOS -->
 <div class="card">
   <h3>💃 2. Gestão de Treinos (Ritbox e Aulas Aeróbicas)</h3>
-  <p style="font-size: 13px; opacity: 0.8; margin-top:0;">Aulas completas em português com mais de 5 minutos de duração. Acompanhe suas cargas e repetições:</p>
+  <p style="font-size: 13px; opacity: 0.8; margin-top:0;">Aulas completas em português com mais de 5 minutos de duração:</p>
   
   <div id="listaTreinos"></div>
   <button onclick="sugerirSubstituto()" style="background:#2563eb; color:white; margin-top:5px;">🔄 Aparelho/Espaço Ocupado? Ver Substituto</button>
   <div id="sugestaoSubst" style="margin-top:10px; font-size:14px; font-style:italic; color:var(--accent);"></div>
 </div>
 
-<!-- CRONÔMETRO PROGRESSIVO (0 AO INFINITO) -->
+<!-- CRONÔMETRO PROGRESSIVO -->
 <div class="card">
   <h3>⏱️ Cronômetro Progressivo (0 ao Infinito)</h3>
   <p style="font-size: 13px; opacity: 0.85; line-height: 1.5; margin-top: 0;">
-    Toque na aba Cronômetro. Clique em <b>Iniciar</b> para começar a contagem do zero. Você pode pausar, continuar ou zerar a qualquer momento.
+    Clique em <b>Iniciar</b> para começar a contagem do zero. Você pode pausar, continuar ou zerar a qualquer momento.
   </p>
   <div class="timer-box">
     <div id="timerDisplay" class="timer-display">00:00:00</div>
@@ -300,7 +299,7 @@ iframe {
   </div>
 </div>
 
-<!-- 3. NUTRIÇÃO, HÁBITOS E LEMBRETES DE DATA/HORA -->
+<!-- 3. NUTRIÇÃO, HÁBITOS E LEMBRETES -->
 <div class="card">
   <h3>🥗 3. Nutrição, Hidratação e Lembretes</h3>
   <div class="grid-2">
@@ -325,9 +324,9 @@ iframe {
   <h3>💉 4. Guia & Controle de Aplicações Mounjaro</h3>
   <p style="font-size: 13px; opacity: 0.9; margin-bottom: 12px;">
     <b>💡 Dicas Nutricionais para quem usa Mounjaro:</b><br>
-    • Foque em proteínas magras (frango, ovos, peixe) em pequenas porções para preservar a massa magra devido à saciedade prolongada.<br>
-    • Hidrate-se constantemente ao longo do dia para evitar dores de cabeça.<br>
-    • Evite alimentos gordurosos ou muito pesados para prevenir desconfortos gástricos.
+    • Foque em proteínas magras (frango, ovos, peixe) em pequenas porções.<br>
+    • Hidrate-se constantemente ao longo do dia.<br>
+    • Evite alimentos gordurosos para prevenir desconfortos.
   </p>
   <div class="grid-2">
     <div>
@@ -343,7 +342,7 @@ iframe {
   <div id="historicoMounjaro" style="margin-top:12px; font-size: 14px;"></div>
 </div>
 
-<!-- RODAPÉ COM LINK PARA TERMOS E PRIVACIDADE -->
+<!-- RODAPÉ -->
 <div class="footer-link">
   <span onclick="abrirTermos()">Termos de Uso e Política de Privacidade</span>
   <div style="margin-top: 5px; font-size: 11px; opacity: 0.6;">© 2026 Carlamitertech — Todos os direitos reservados.</div>
@@ -355,22 +354,19 @@ iframe {
   <iframe id="player" src="" allowfullscreen></iframe>
 </div>
 
-<!-- MODAL DE TERMOS DE USO E PRIVACIDADE -->
+<!-- MODAL DE TERMOS -->
 <div id="modalTermos">
   <div class="modal-content">
     <h3>📄 Termos de Uso e Política de Privacidade</h3>
     <p style="font-size: 13px; line-height: 1.6;">
       <b>1. Autoria e Direitos Autorais:</b><br>
-      Este aplicativo (<b>Todo Mundo Fit Pro</b>) foi inteiramente desenvolvido, estruturado e criado por <b>@Carlamitertech</b> (Contato: <u>sistemacmtech@gmail.com</u>). Todos os direitos intelectuais, layouts, códigos e recursos são protegidos pelas leis de propriedade intelectual.<br><br>
+      Este aplicativo (<b>Todo Mundo Fit Pro</b>) foi inteiramente desenvolvido, estruturado e criado por <b>@Carlamitertech</b> (Contato: <u>sistemacmtech@gmail.com</u>). Todos os direitos intelectuais e códigos são protegidos pelas leis de propriedade intelectual.<br><br>
 
-      <b>2. Proibição de Plágio e Cópia Não Autorizada:</b><br>
-      É expressamente proibida a cópia, reprodução, redistribuição, engenharia reversa ou comercialização total ou parcial deste código, design ou funcionalidades sem a autorização prévia e expressa dos desenvolvedores da Carlamitertech. O plágio constitui crime de violação de direitos autorais.<br><br>
+      <b>2. Proibição de Plágio:</b><br>
+      É expressamente proibida a cópia, reprodução, redistribuição ou comercialização total ou parcial deste sistema sem autorização expressa. O plágio constitui crime de violação de direitos autorais.<br><br>
 
-      <b>3. Política de Privacidade e Dados:</b><br>
-      Respeitamos rigidamente a sua privacidade. Todos los dados informados pelo usuário (como peso, medidas, histórico e rotinas de treino) são armazenados exclusivamente no dispositivo local do usuário (via <i>localStorage</i> do navegador). Nenhum dado pessoal é enviado ou coletado por servidores externos da Carlamitertech.<br><br>
-
-      <b>4. Isenção de Responsabilidade Médica:</b><br>
-      Este software tem caráter informativo e de suporte à rotina fitness. Consulte um médico ou nutricionista antes de iniciar treinos intensos ou fazer uso de medicamentos como Mounjaro.
+      <b>3. Privacidade de Dados:</b><br>
+      Todos os dados preenchidos são salvos exclusivamente no armazenamento interno (<i>localStorage</i>) do seu dispositivo, garantindo total privacidade e segurança.
     </p>
     <button onclick="fecharTermos()" style="margin-top: 15px;">Entendi e Fechar</button>
   </div>
@@ -378,33 +374,12 @@ iframe {
 
 <script>
 const exerciciosBase = [
-  { 
-    nome: "Ritbox - Aula Completa 5 Minutos (PT-BR)", 
-    aparelho: "Espaço livre", 
-    video: "https://www.youtube.com/embed/5m38B13B17g", 
-    substituto: "Zumba ou Dança aeróbica livre" 
-  },
-  { 
-    nome: "Ritbox - Coreografia Aeróbica Intensa (PT-BR)", 
-    aparelho: "Espaço livre", 
-    video: "https://www.youtube.com/embed/y6120QOlsfU", 
-    substituto: "Pulos de corda ou polichinelos" 
-  },
-  { 
-    nome: "Treino Cardio e Dança 5 Min (PT-BR)", 
-    aparelho: "Peso corporal", 
-    video: "https://www.youtube.com/embed/IODxDxX7oi4", 
-    substituto: "Corrida estacionária" 
-  },
-  { 
-    nome: "Ritbox Express - Queima Rápida (PT-BR)", 
-    aparelho: "Peso corporal", 
-    video: "https://www.youtube.com/embed/aclHkVaku9U", 
-    substituto: "Agachamentos com saltos" 
-  }
+  { nome: "Ritbox - Aula Completa 5 Minutos (PT-BR)", aparelho: "Espaço livre", video: "https://www.youtube.com/embed/5m38B13B17g", substituto: "Zumba ou Dança aeróbica livre" },
+  { nome: "Ritbox - Coreografia Aeróbica Intensa (PT-BR)", aparelho: "Espaço livre", video: "https://www.youtube.com/embed/y6120QOlsfU", substituto: "Pulos de corda ou polichinelos" },
+  { nome: "Treino Cardio e Dança 5 Min (PT-BR)", aparelho: "Peso corporal", video: "https://www.youtube.com/embed/IODxDxX7oi4", substituto: "Corrida estacionária" },
+  { nome: "Ritbox Express - Queima Rápida (PT-BR)", aparelho: "Peso corporal", video: "https://www.youtube.com/embed/aclHkVaku9U", substituto: "Agachamentos com saltos" }
 ];
 
-// CRONÔMETRO PROGRESSIVO (0 AO INFINITO)
 let cronometroInterval;
 let segundosTotais = 0;
 let cronometroRodando = false;
@@ -448,10 +423,10 @@ function atualizarDisplayCronometro() {
   document.getElementById("timerDisplay").innerText = `${h}:${m}:${s}`;
 }
 
-// FUNÇÃO PARA BAIXAR O APLICATIVO DIRETAMENTE NO CELULAR
+// DOWNLOAD OTIMIZADO PARA CELULAR
 function baixarAppDireto() {
-  const htmlContent = document.documentElement.outerHTML;
-  const blob = new Blob([htmlContent], { type: 'text/html' });
+  const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+  const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -459,8 +434,8 @@ function baixarAppDireto() {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  alert("Aplicativo baixado com sucesso! Você já pode abrir o arquivo diretamente no seu celular.");
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  alert("✨ Download iniciado! Dica: Para instalar como aplicativo na tela inicial do celular, abra o arquivo baixado no navegador do seu celular (Chrome ou Safari) e selecione a opção 'Adicionar à Tela Inicial' no menu.");
 }
 
 function salvarPerfilCompleto() {
