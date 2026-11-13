@@ -193,6 +193,18 @@ iframe {
   border: 1px solid var(--border);
 }
 
+.mounjaro-item {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
 .footer-link {
   text-align: center;
   margin-top: 30px;
@@ -382,7 +394,11 @@ iframe {
     </div>
   </div>
   <button onclick="salvarMounjaro()">Registrar Aplicação</button>
-  <div id="historicoMounjaro" style="margin-top:12px; font-size: 14px;">Nenhum registro recente.</div>
+  
+  <div style="margin-top: 15px;">
+    <label style="font-weight: bold; margin-bottom: 6px;">Histórico de Aplicações Semanais:</label>
+    <div id="historicoMounjaro">Nenhum registro recente.</div>
+  </div>
 </div>
 
 <!-- RODAPÉ -->
@@ -500,7 +516,6 @@ function processarE_SalvarFoto(tipo, event) {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       
-      // Reduz a imagem para otimizar espaço no armazenamento do navegador
       let largura = img.width;
       let altura = img.height;
       const maxDimensao = 600;
@@ -659,14 +674,45 @@ function salvarMounjaro() {
   hist.unshift(reg);
   localStorage.setItem("mounjaroHist", JSON.stringify(hist));
   exibirMounjaro();
+  
+  // Limpa os campos após salvar
+  document.getElementById("dataMounjaro").value = "";
+  document.getElementById("doseMounjaro").value = "";
   alert("Aplicação registrada com sucesso!");
+}
+
+function excluirMounjaro(index) {
+  let hist = JSON.parse(localStorage.getItem("mounjaroHist")) || [];
+  if(confirm("Deseja realmente excluir este registro de aplicação?")) {
+    hist.splice(index, 1);
+    localStorage.setItem("mounjaroHist", JSON.stringify(hist));
+    exibirMounjaro();
+  }
 }
 
 function exibirMounjaro() {
   let hist = JSON.parse(localStorage.getItem("mounjaroHist")) || [];
-  if(hist.length === 0) return;
-  let ultimo = hist[0];
-  document.getElementById("historicoMounjaro").innerHTML = `<b>Última aplicação:</b> ${ultimo.data} — Dose: ${ultimo.dose}`;
+  let container = document.getElementById("historicoMounjaro");
+  
+  if(hist.length === 0) {
+    container.innerHTML = "Nenhum registro recente.";
+    return;
+  }
+
+  let html = "";
+  hist.forEach((item, index) => {
+    html += `
+      <div class="mounjaro-item">
+        <div>📅 <b>Data:</b> ${item.data} &nbsp;|&nbsp; 💉 <b>Dose:</b> ${item.dose}</div>
+        <button onclick="exircluirMounjaroOuChamar(${index})" style="background:#ef4444; color:white; width:auto; padding:6px 10px; margin:0; font-size:12px;">Excluir</button>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+function exircluirMounjaroOuChamar(index) {
+  excluirMounjaro(index);
 }
 
 function alternarTema() {
